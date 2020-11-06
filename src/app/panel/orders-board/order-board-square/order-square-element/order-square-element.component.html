@@ -1,0 +1,261 @@
+<div class="sq-el-content" [ngClass]="{'is-drink':element.type.id==2, 'is-grill':element.grill>0 || isPlusGrill}">
+  <ng-container *ngIf="element.elementType!='config_steps_price_many'">
+    <span class="name">
+      {{element.quantity+' x '+element.shortName}}
+    </span>
+    <span *ngIf="element.elementType=='special'">
+      {{'(budżet: '+element.price+' pln)'}}
+    </span>
+    <img src="/assets/images/krewetka.png" width="20" *ngIf="element.isSea">
+    <ng-container *ngIf="element.serveType=='plate'">
+      <span class="icon-info">
+        <i class="fas fa-utensils"></i>
+      </span>
+    </ng-container>
+    <ng-container *ngIf="element.serveType=='pack'">
+      <span class="icon-info">
+        <i class="fas fa-box-open"></i>
+      </span>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="element.elementType=='config_steps_price_many'">
+    <ng-container *ngFor="let step of element.stepOptionsList|configStepByElementViewGroup:element.element">
+      <span class="d-block">
+        {{step.name}} x {{step.quantity}}
+      </span>
+    </ng-container>
+    <img src="/assets/images/krewetka.png" width="20" *ngIf="element.isSea">
+    <ng-container *ngIf="element.serveType=='plate'">
+      <span class="icon-info">
+        <i class="fas fa-utensils"></i>
+      </span>
+    </ng-container>
+    <ng-container *ngIf="element.serveType=='pack'">
+      <span class="icon-info">
+        <i class="fas fa-box-open"></i>
+      </span>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="element.canOnePlate">
+    <img src="/assets/images/plate.png" width="20">
+  </ng-container>
+
+  <ng-container *ngIf="element.optionsElements">
+    <div class="label-options">
+      <ng-container *ngIf="element.optionsElements.length">
+        <span>(</span>
+      </ng-container>
+      <ng-container *ngFor="let optse of element.optionsElements | descListGroup;let i=index">
+        <span>
+          {{((i!=0)?(', '):(''))+optse}}
+        </span>
+      </ng-container>
+      <ng-container *ngIf="element.optionsElements.length">
+        <span>)</span>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="element.plusElements">
+    <ng-container *ngIf="element.plusElements.length">
+      <div class="plus-elements d-flex flex-wrap flex-column">
+        <ng-container *ngFor="let d of element.plusElements">
+          <div class="pl-el">
+            <ng-container [ngSwitch]="d.elementType">
+              <ng-container *ngSwitchCase="'one_name'">
+                <ng-container *ngIf="d.optionsElements.length==0">
+                  <span>
+                    {{' + '+d.shortName}}
+                  </span>
+                  &nbsp;
+                  <span>
+                    <i class="fas fa-times"></i>
+                    {{' '+d.qunatity}}
+                  </span>
+
+                </ng-container>
+                <ng-container *ngIf="d.optionsElements.length>0">
+
+                  <ng-container *ngFor="let opt of d.optionsElements|groupOptionsTypesQuantity">
+                    <span>
+                      {{' + '+d.shortName}}
+                    </span>
+                    <span>
+                      {{'('+opt.name+') '}}
+                      <i class="fas fa-times"></i>
+                      {{' '+d.qunatity}}
+                    </span>
+                  </ng-container>
+
+                </ng-container>
+
+              </ng-container>
+              <ng-container *ngSwitchCase="'many_names'">
+                <ng-container *ngIf="d.optionsElements.length==0">
+                  <span>
+                    {{' + '+d.shortName}}
+                  </span>
+                  &nbsp;
+                  <span>
+                    <i class="fas fa-times"></i>
+                    {{' '+d.qunatity}}
+                  </span>
+                </ng-container>
+
+                <ng-container *ngIf="d.optionsElements.length>0">
+
+                  <ng-container *ngFor="let opt of d.optionsElements|groupOptionsTypesQuantity">
+                    <span>
+                      {{' + '+d.shortName}}
+                    </span>
+                    <span>
+                      {{'('+opt.name+') '}}
+                      <i class="fas fa-times"></i>
+                      {{' '+d.qunatity}}
+                    </span>
+                  </ng-container>
+
+                </ng-container>
+
+              </ng-container>
+              <ng-container *ngSwitchCase="'desc_elements'">
+
+                <ng-container *ngIf="d.optionsElements.length==0">
+
+                  <span>
+                    {{' + '+d.shortName}}
+                  </span>
+                  &nbsp;
+                  <span>
+                    <i class="fas fa-times"></i>
+                    {{' '+d.qunatity}}
+                  </span>
+
+                </ng-container>
+
+                <ng-container *ngIf="d.optionsElements.length>0">
+
+                  <ng-container *ngFor="let opt of d.optionsElements|groupOptionsTypesQuantity">
+                    <span>
+                      {{' + '+d.shortName}}
+                    </span>
+                    <span>
+                      {{'('+opt.name+') '}}
+                      <i class="fas fa-times"></i>
+                      {{' '+d.qunatity}}
+                    </span>
+                  </ng-container>
+
+                </ng-container>
+
+
+              </ng-container>
+              <ng-container *ngSwitchCase="'config_price'">
+                <span>
+                  {{' + '+d.shortName}}
+                </span>
+                &nbsp;
+                <span>
+                  <i class="fas fa-times"></i>
+                  {{' '+d.qunatity}}
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'config_steps_price'">
+                <span>
+                  {{' + '+d.shortName}}
+                </span>
+                &nbsp;
+                <span>
+                  <i class="fas fa-times"></i>
+                  {{' '+d.qunatity}}
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'config_steps_price_many'">
+                <div class="d-flex flex-wrap">
+                  <ng-container *ngFor="let step of d|configStepsViewGroup">
+                    <div class="step-many">
+                      <span>
+                        {{' + '+step.name}}
+                      </span>
+                      &nbsp;
+                      <span>
+                        <i class="fas fa-times"></i>
+                        {{' '+step.quantity}}
+                      </span>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="element.descElements">
+    <div class="d-flex flex-wrap">
+      <ng-container *ngIf="element.descElements.length">
+        <span class="d-block">
+          {{element.descElements|mergeNamesArray}}
+        </span>
+      </ng-container>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="element.reverseElements">
+    <ng-container *ngIf="element.reverseElements.length">
+      <div class="d-flex flex-wrap">
+        <span *ngFor="let d of element.reverseElements">
+          {{d.from+' >> '+d.to}}
+        </span>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="element.description!=''">
+
+    <div class="font-italic" [innerHtml]="element.description">
+    </div>
+
+  </ng-container>
+
+  <ng-container *ngIf="element.gluten>0">
+    <img src="/assets/images/gluten.png" width="20">
+    <span>
+      {{'('+element.gluten+'/'+element.quantity+')'}}
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="element.grill>0">
+    <img src="/assets/images/grill.png" width="20">
+    <span>
+      {{'('+element.grill+'/'+element.quantity+')'}}
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="element.canAcc">
+    <div class="d-flex flex-wrap">
+      <ng-container *ngFor="let item of element.acc">
+        <ng-container *ngIf="item.howMany>0">
+          <span>
+            {{'('+item.acc.name+' '+item.howMany+'+)'}}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="item.howMany==-1">
+          <span>
+            {{'(bez '+item.acc.name+')'}}
+          </span>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="element.extra>0">
+    <span class="d-block">
+      {{'extra: '+element.extra+' x '+order.oneExtraPrice+' pln'}}
+    </span>
+  </ng-container>
+  <div class="over-click" (click)="changeStatus()"></div>
+</div>

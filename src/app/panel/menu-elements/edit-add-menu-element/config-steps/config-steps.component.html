@@ -1,0 +1,113 @@
+<div class="w-100">
+  <div class="row">
+    <div class="col-md-12">
+      <button mat-raised-button color="primary" type="button" (click)="addConfig()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button mat-raised-button color="primary" type="button" (click)="changeOrder()">
+        Zmień kolejność
+      </button>
+      <hr>
+    </div>
+  </div>
+  <form [formGroup]="formData">
+    <mat-accordion class="example-headers-align" formArrayName="configStepsPrice" multi>
+      <mat-expansion-panel *ngFor="let item of formData.get('configStepsPrice')['controls'];let i=index" [formGroupName]="i">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="align-items-center justify-content-between d-flex w-100">
+              <div>
+                {{item.get('name').value}}
+              </div>
+              <div>
+                <button mat-raised-button type="button" color="warn" (click)="removeConfig(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Nazwa" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Krótka nazwa" formControlName="shortName">
+        </mat-form-field>
+        <div formArrayName="types">
+          <div class="row">
+            <div class="col-md-12">
+              <hr>
+              <button mat-raised-button color="primary" type="button" (click)="addType(i)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button mat-raised-button color="primary" type="button" (click)="changeOrderSecond(i)">
+                Zmień kolejność
+              </button>
+              <hr>
+            </div>
+          </div>
+          <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel *ngFor="let item2 of item.get('types')['controls'];let j=index" [formGroupName]="j">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="align-items-center justify-content-between d-flex w-100">
+                    {{item2.get('type').value}}
+                    <div>
+                      <button mat-raised-button type="button" color="warn" (click)="removeType(i,j)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Typ" formControlName="type">
+              </mat-form-field>
+              <div formArrayName="options">
+                <div class="row">
+                  <div class="col-md-12">
+                    <hr>
+                    <button mat-raised-button color="primary" type="button" (click)="addOption(i,j)">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    <button mat-raised-button color="primary" type="button" (click)="changeOrderThird(i,j)">
+                      Zmień kolejność
+                    </button>
+                    <hr>
+                  </div>
+                </div>
+                <mat-expansion-panel *ngFor="let item3 of item2.get('options')['controls'];let k=index" [formGroupName]="k">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <div class="align-items-center justify-content-between d-flex w-100">
+                        {{item3.get('name').value}}
+                        <div>
+                          <img src="/assets/images/krewetka.png" width="30" *ngIf="item3.get('isSea').value">
+                          <button mat-raised-button type="button" color="warn" (click)="removeOption(i,j,k)">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Nazwa" formControlName="name">
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Krótka nazwa" formControlName="shortName">
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Cena" formControlName="price">
+                  </mat-form-field>
+                  <mat-slide-toggle formControlName="isSea">Czy jest wersja z owocami morza</mat-slide-toggle>
+                </mat-expansion-panel>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<ng-template #temp></ng-template>

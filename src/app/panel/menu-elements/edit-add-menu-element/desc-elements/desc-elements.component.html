@@ -1,0 +1,76 @@
+<div class="w-100">
+  <div class="row">
+    <div class="col-md-12">
+      <button mat-raised-button color="primary" type="button" (click)="addDesc()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button mat-raised-button color="primary" type="button" (click)="changeOrder()">
+        Zmień kolejność
+      </button>
+      <hr>
+    </div>
+  </div>
+  <form [formGroup]="formData">
+    <mat-accordion class="example-headers-align" formArrayName="descElements" multi>
+      <mat-expansion-panel *ngFor="let item of formData.get('descElements')['controls'];let i=index" [formGroupName]="i">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="align-items-center justify-content-between d-flex w-100">
+              <div>
+                {{item.get('shortName').value}}
+                <small>
+                  ({{item.get('info').value}})
+                </small>
+              </div>
+              <div>
+                <img src="/assets/images/krewetka.png" width="30" *ngIf="item.get('isSea').value">
+                <button mat-raised-button type="button" color="warn" (click)="removeDesc(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="w-100">
+          <textarea matInput placeholder="Opis" formControlName="info"></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="krótka nazwa" formControlName="shortName">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Cena bez owoców morza" formControlName="price">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Cena z owocami morza" formControlName="seaPrice">
+        </mat-form-field>
+        <mat-slide-toggle formControlName="isSea">Czy jest wersja z owocami morza</mat-slide-toggle>
+        <div formArrayName="options">
+          <div class="row">
+            <div class="col-md-12">
+              <hr>
+              <button mat-raised-button color="primary" type="button" (click)="addOption(i)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <hr>
+            </div>
+          </div>
+          <div class="row" *ngFor="let item of item.get('options')['controls'];let j=index">
+            <div class="col-md-10">
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Nazwa opcji" [formControlName]="j">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="button" color="warn" (click)="removeOption(i,j)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<ng-template #temp></ng-template>

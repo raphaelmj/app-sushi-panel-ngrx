@@ -1,0 +1,48 @@
+.stats-screen-cnt {
+  margin-top: 64px;
+}
+
+
+.container-side {
+  min-height: calc(100vh - 64px);
+}
+
+.side-nav-content {
+  margin: 20px;
+  padding: 10px;
+  width: 250px;
+
+  h2 {
+    text-transform: uppercase;
+  }
+}
+
+button.open-bt {
+  font-size: 1.6rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 10px;
+  color: #000000;
+}
+
+.beam-under-cart {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #000000;
+  background-color: #ffffff;
+  height: 70px;
+
+  button.open-bt {
+    width: 90px;
+  }
+
+  .beam-content {
+    width: calc(100% - 90px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

@@ -1,0 +1,31 @@
+<form [formGroup]="formFilters">
+
+  <div class="filters-beam">
+    <div class="filter">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker1" formControlName="from" [matDatepickerFilter]="fromFilter">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 [startView]="startViewFrom"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="filter">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker2" formControlName="to" [matDatepickerFilter]="toFilter">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2 [startView]="startViewTo"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="filter">
+      <mat-form-field>
+        <mat-label>Typ</mat-label>
+        <mat-select formControlName="cI" >
+          <mat-option *ngFor="let t of types" [value]="t.value">
+            {{t.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+  </div>
+
+</form>

@@ -1,0 +1,45 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="elements-to-add" *ngFor="let item of menuElements$ | async">
+            <div class="name">
+              <span class="badge">{{item.id}}</span>
+              <h4 *ngIf="item.elementType=='one_name'">{{item.name}}</h4>
+              <div *ngIf="item.elementType=='many_names'" class="many-names-div">
+                <h4 *ngFor="let n of item.priceNames" [innerHTML]="n.name">
+                </h4>
+              </div>
+              <h4 *ngIf="item.elementType=='desc_elements'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_price'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_steps_price'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_steps_price_many'">{{item.name}}</h4>
+              <h5 class="badge badge-success">{{item.elementType|menuTypeName}}</h5>
+            </div>
+            <div class="add-bt">
+              <button mat-raised-button color="primary" (click)="addElement(item)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

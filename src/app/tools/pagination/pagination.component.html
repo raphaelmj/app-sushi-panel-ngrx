@@ -1,0 +1,9 @@
+<nav [ngClass]="{'dark-t': theme=='dark', 'light-t':theme=='light'}">
+  <ul class="pagination">
+    <li *ngFor="let p of pagination;index as i" [ngClass]="{'active': p.active}" class="page-item">
+      <a href="#" class="page-link" (click)="changePag($event,p)">
+        {{p.nr}}
+      </a>
+    </li>
+  </ul>
+</nav>

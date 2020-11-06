@@ -1,0 +1,77 @@
+.overshadow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+}
+
+.edit-area {
+  position: fixed;
+  left: 27vw;
+  top: 2vh;
+  width: 46vw;
+  height: 96vh;
+  background: #FFF;
+  z-index: 22;
+  padding: 2vh 2vw 2vh 2vw;
+  z-index: 101;
+
+  .scroll-inside {
+    width: 42vw;
+    height: 92vh;
+    overflow-y: scroll;
+  }
+
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: -1vh;
+    background: #FFF;
+    border-radius: 90px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    box-shadow: 0 0 10px #000;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+
+button.btn-save {
+  position: fixed;
+  left: 2vw;
+  bottom: 2vh;
+  width: 96vw;
+  z-index: 88;
+}
+
+.sort-area{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  .sort-el{
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-top: 1px solid #000;
+    h3{
+      margin:0 !important;
+    }
+  }
+  .sort-el:last-child{
+    border-bottom: 1px solid #000;
+  }
+}

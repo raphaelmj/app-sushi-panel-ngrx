@@ -1,0 +1,10 @@
+<div *ngIf="!router.isActive('panel/stats/revenue', false)">
+  <a [routerLink]="[ '/panel/stats/revenue']">
+    Statystki utargu
+  </a>
+</div>
+<div *ngIf="!router.isActive('panel/stats/elements-sales', false)">
+  <a [routerLink]="[ '/panel/stats/elements-sales']">
+    Statystki dań
+  </a>
+</div>

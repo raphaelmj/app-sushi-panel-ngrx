@@ -1,0 +1,164 @@
+.square {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .square-head {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .square-footer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .square.footer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .row-square {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 30px;
+
+    >* {
+      display: flex;
+      height: inherit;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .row-square.first-row {
+
+    .order-number {
+      background-color: #0300b8;
+      color: #ffffff;
+      font-size: 18;
+
+      &.other-plus {
+        background-color: #020152;
+      }
+
+      &.other-minus {
+        background-color: #520606;
+      }
+    }
+
+    .action-type {
+      background-color: #99d1ff;
+      color: #000000;
+      font-size: 18;
+    }
+
+    .price-total {
+      font-size: 16;
+    }
+
+    .order-time {
+      background-color: #d0ff00;
+      color: #000000;
+      font-size: 18;
+    }
+
+    .edit-order {
+      background-color: #4E412C;
+    }
+  }
+
+  .row-square.reserve-row {
+    background-color: #c8ff00;
+    color: #000000;
+
+    .name-reserve {}
+
+    .reserve-size {}
+  }
+
+  .row-square.time-row {
+    .f-limit {
+      font-size: 18;
+      color: #000000;
+
+      &.before-time {
+        background-color: #00ff0d;
+      }
+
+      &.after-time {
+        background-color: #ff0000;
+      }
+    }
+
+    .f-status {}
+
+    .archive-status {}
+
+    .inprogress-sign {
+      font-size: 18;
+      opacity: 0.5;
+      color: #000000;
+      background-color: #ffee00;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
+  .row-square.order-actions-btns {
+    .ready-action {
+      background-color: #D7C5AB;
+      color: #000000;
+
+      &.order-ready {
+        background-color: #00ff0d;
+      }
+    }
+
+    .bon-action {
+      &.bonus-used {
+        background-color: #ffff99;
+        color: #000000;
+      }
+    }
+
+    .paid-action {
+      background-color: #ff0000;
+      color: #000000;
+
+      &.order-paid {
+        background-color: #00ff0d;
+      }
+    }
+  }
+
+}
+
+.order-elements-data-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+
+  .square-element {
+    width: calc((100% - 4px) / 2);
+    border: 1px solid #FFF;
+
+    &:nth-child(2n+2) {
+      margin: 0 0 4px 4px;
+    }
+  }
+
+  .square-element.element-ready {
+    opacity: 0.5;
+  }
+}

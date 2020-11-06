@@ -1,0 +1,246 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <form [formGroup]="formData" (submit)="saveData()">
+
+
+
+            <div class="row">
+              <div class="col-md-4">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Typ elementu</mat-label>
+                  <mat-select formControlName="elementType">
+                    <mat-option *ngFor="let el of elementTypes" [value]="el">
+                      {{el|menuTypeName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Sposób dodawania</mat-label>
+                  <mat-select formControlName="optionsOnInit">
+                    <mat-option *ngFor="let el of optionsOnInits" [value]="el">
+                      {{el|menuOptionTypeName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-slide-toggle formControlName="elastic">
+                  Opcja elastyczna (pozwala na rozszerzanie elementu)
+                </mat-slide-toggle>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="grid-3">
+                  <div>
+                    <mat-form-field class="w-100">
+                      <input matInput placeholder="Pełna nazwa" formControlName="name">
+                    </mat-form-field>
+                    <mat-slide-toggle formControlName="hasNamePrefix">
+                      może być na początku nazwy przy wielu nazwach
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-form-field class="w-100">
+                      <input matInput placeholder="Nazwa skrócona" formControlName="shortName">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <mat-form-field class="w-100">
+                      <textarea matInput placeholder="Opis" formControlName="description"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Ogólna ilośc dla grupy elementów" formControlName="perSizeForAll">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="grid-4">
+                  <div>
+                    <mat-slide-toggle formControlName="hasGluten" [disabled]="disabledGluten">
+                      może posiadać gluten
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="onlyGluten">
+                      jedynie wersja z glutenem
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="canGrill" [disabled]="disabledGrill">
+                      można grilować
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="onlyGrill">
+                      jedynie wersja grilowana
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="grid-4">
+                  <div>
+                    <mat-slide-toggle formControlName="canOnePlate">
+                      czy może być na wielu/jednym talerzu?
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="canAcc">
+                      czy uwzględnić opcje dodatkowe?
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="canPack">
+                      dostępne na wynos
+                    </mat-slide-toggle>
+                  </div>
+                  <div>
+                    <mat-slide-toggle formControlName="canExtra">
+                      można dodawać extra dodatki.
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="grid-row">
+                  <div [ngClass]="{'active-edit': boolClassesList.get('config_price') || boolClassesList.get('one_name')}">
+                    <h4>Opcje szczegółowe</h4>
+                    <div formArrayName="options" class="w-100">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button mat-raised-button color="primary" type="button" (click)="addOption()">
+                            <i class="fas fa-plus"></i>
+                          </button>
+                          <hr>
+                        </div>
+                      </div>
+                      <mat-card *ngIf="formData.get('options')['controls'].length>0">
+                        <div class="row" *ngFor="let item of formData.get('options')['controls'];let i=index">
+                          <div class="col-md-10">
+                            <mat-form-field class="w-100">
+                              <input matInput placeholder="Pełna nazwa" [formControlName]="i">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-2">
+                            <button mat-raised-button type="button" color="warn" (click)="removeOption(i)">
+                              <i class="fas fa-times"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </mat-card>
+                    </div>
+                  </div>
+                  <div [ngClass]="{'active-edit': boolClassesList.get('many_names')}">
+                    <h4>Wiele nazw</h4>
+                    <app-price-names [priceNames]="element.priceNames" (changeEmit)="changePriceNames($event)"></app-price-names>
+                  </div>
+                  <div [ngClass]="{'active-edit': boolClassesList.get('desc_elements')}">
+                    <h4>Grupa elementów</h4>
+                    <app-desc-elements [descElements]="element.descElements" (changeEmit)="changeDesc($event)"></app-desc-elements>
+                  </div>
+                  <div [ngClass]="{'active-edit': boolClassesList.get('config_price') || boolClassesList.get('one_name')}">
+                    <h4>Ceny</h4>
+                    <app-prices [price]="element.price" (changeEmit)="changePrice($event)"></app-prices>
+                  </div>
+                  <div [ngClass]="{'active-edit': boolClassesList.get('config_steps_price') || boolClassesList.get('config_steps_price_many')}">
+                    <h4>Wiele opcji elementu</h4>
+                    <mat-slide-toggle formControlName="skipStepOne">
+                      <span class="toggle">Czy połączyć pierwszy krok z drugim</span>
+                    </mat-slide-toggle>
+                    <hr>
+                    <app-config-steps [configStepsPrice]="element.configStepsPrice" (changeEmit)="changeConfig($event)"></app-config-steps>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <button mat-raised-button color="primary" class="bt-save w-100" [ngClass]="{'saving': isSaving}">
+                  Zapisz
+                </button>
+              </div>
+            </div>
+
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

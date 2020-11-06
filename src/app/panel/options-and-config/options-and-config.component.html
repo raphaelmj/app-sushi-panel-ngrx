@@ -1,0 +1,58 @@
+<section class="m-t-90">
+  <div class="row">
+    <div class="col-md-6" [ngClass]="{'col-md-12': currentUser.permission=='normal', 'col-md-6':currentUser.permission=='superadmin'}">
+      <h2>Opcje konfiguracyjne (cena extra + dodatki)</h2>
+      <button mat-raised-button type="button" (click)="openAppConfig()">
+        <i class="fas fa-cogs"></i> Konfigurcja podstawowa
+      </button>
+    </div>
+    <ng-container *ngIf="currentUser">
+      <ng-container *ngIf="currentUser.permission=='superadmin'">
+        <div class="col-md-6">
+          <h2>Hasła i użytkownicy</h2>
+          <button mat-raised-button type="button" (click)="openPasswordsUsers()">
+            <i class="fas fa-key"></i> Hasła i użytkownicy
+          </button>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="align-items-center justify-content-between d-flex w-100">
+        <h2>Opcje opisowe</h2>
+        <div>
+          <button mat-raised-button type="button" color="primary" (click)="changeOrderStart(optionOrConfig.desc)">
+            Zmień kolejność
+          </button>
+          <button mat-raised-button type="button" color="primary" (click)="addOptionsGroup(optionOrConfig.desc)">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <hr>
+      <app-edit-desc [descOptions]="descOptions$ | async"></app-edit-desc>
+    </div>
+    <div class="col-md-6">
+      <div class="align-items-center justify-content-between d-flex w-100">
+        <h2>Opcje zamieniania</h2>
+        <div>
+          <button mat-raised-button type="button" color="primary" (click)="changeOrderStart(optionOrConfig.reverse)">
+            Zmień kolejność
+          </button>
+          <button mat-raised-button type="button" color="primary" (click)="addOptionsGroup(optionOrConfig.reverse)">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <hr>
+      <app-edit-reverse [reverseOptions]="reverseOptions$ | async"></app-edit-reverse>
+    </div>
+  </div>
+</section>
+<ng-template #temp></ng-template>

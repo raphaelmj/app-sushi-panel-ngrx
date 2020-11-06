@@ -1,0 +1,62 @@
+<section class="m-t-90">
+  <div class="row">
+    <div class="col-md-12">
+      <div cdkDropListGroup class="grid-r">
+        <div cdkDropList *ngFor="let list of carts" [cdkDropListData]="list" cdkDropListSortingDisabled (cdkDropListDropped)="drop($event)">
+
+          <div class="group-title">
+            <div>
+              <h2>{{list.name}}</h2>
+              <div class="bg-color-square" [ngStyle]="{'background-color':'#'+list.bgColor}"></div>
+              <mat-slide-toggle [checked]="list.toPlus" (change)="changePlus(list)">
+                w opcjach roszerzania
+              </mat-slide-toggle>
+            </div>
+            <div class="btn-cart-group">
+              <button mat-raised-button color="primary" (click)="openEditCartC(list)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button mat-raised-button color="primary" (click)="addElement(list)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <div cdkDrag [cdkDragData]="item" *ngFor="let item of list.elements" class="box">
+            <span class="badge">{{item.id}}</span>
+            <div>
+              <div>
+                <h4 *ngIf="item.elementType=='one_name'">{{item.name}}</h4>
+                <ng-container *ngIf="item.elementType=='many_names'">
+                  <h4 *ngFor="let n of item.priceNames" [innerHTML]="n.name">
+                  </h4>
+                </ng-container>
+                <h4 *ngIf="item.elementType=='desc_elements'">{{item.name}}</h4>
+                <h4 *ngIf="item.elementType=='config_price'">{{item.name}}</h4>
+                <h4 *ngIf="item.elementType=='config_steps_price'">{{item.name}}</h4>
+                <h4 *ngIf="item.elementType=='config_steps_price_many'">{{item.name}}</h4>
+                <h5 class="badge badge-success">{{item.elementType|menuTypeName}}</h5>
+              </div>
+              <div>
+                <mat-slide-toggle [checked]="item.showOnPlus" (change)="changePlusElement(item)" [disabled]="!list.toPlus">
+                  w opcjach roszerzania
+                </mat-slide-toggle>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button mat-raised-button color="primary" (click)="openEdit(item)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button mat-raised-button color="warn" (click)="remove(item)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #temp></ng-template>

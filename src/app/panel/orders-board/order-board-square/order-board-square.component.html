@@ -1,0 +1,110 @@
+<div class="square">
+
+  <div class="square-head">
+    <div class="row-head first-row row-square">
+      <div class="order-number" [ngClass]="{'other-plus': datePosition=='after','other-minus':datePosition=='before'}">
+        {{order.orderNumber}}
+        <ng-container *ngIf="datePosition=='before'">
+          {{order.endDay|daySuffix:this.day:datePosition}}
+        </ng-container>
+        <ng-container *ngIf="datePosition=='after'">
+          {{order.endDay|daySuffix:this.day:datePosition}}
+        </ng-container>
+      </div>
+
+      <div class="action-type" (click)="changeActionType()">
+        {{order.actionType | actionShortName}}
+      </div>
+
+      <div class="price-total">
+        <ng-container *ngIf="!order.bonusUsed">
+          {{order.total+' pln'}}
+        </ng-container>
+        <ng-container *ngIf="order.bonusUsed">
+          {{order.bonusTotal+' pln'}}
+        </ng-container>
+      </div>
+
+      <div class="order-time" (click)="changeTime()">
+        {{order.endAt | date: 'H:mm:ss'}}
+      </div>
+
+      <!-- <div class="edit-order">
+        <i class="fas fa-edit"></i>
+      </div> -->
+    </div>
+
+
+    <ng-container *ngIf="order.reservation">
+      <div class="row-head reserve-row row-square">
+        <div class="name-reserve">
+          Rezerwacja
+        </div>
+        <div class="reserve-size">
+          {{order.reservationSize +' x '}}
+          &nbsp;
+          <i class="fas fa-male"></i>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <div class="row-head time-row row-square">
+      <div class="f-limit" [ngClass]="{ 'before-time': !diff.firstDateWasLater, 'after-time': diff.firstDateWasLater }" (click)="plusMinutes()">
+        {{diff | orderLimitTime}}
+      </div>
+      <div class="f-status" (click)="changeStatus()">
+        {{order.status | orderStatus}}
+      </div>
+      <div class="archive-status" (click)="toArchive()">
+        <ng-container *ngIf="order.status != 'archive'">
+          <i class="fas fa-archive"></i>&nbsp;Archiwizuj
+        </ng-container>
+        <ng-container *ngIf="order.status == 'archive'">
+          <i class="fas fa-undo-alt"></i>&nbsp;Przywróć
+        </ng-container>
+      </div>
+      <div class="inprogress-sign" [ngClass]="{'active': order.inProgress}" (click)="changeInProgress()">
+        <i class="fas fa-hot-tub"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="order-elements-data-row">
+    <div class="square-element" *ngFor="let el of order.cartOrderElements" [ngClass]="{'element-ready': el.status}">
+      <app-order-square-element [element]="el" [order]="order"></app-order-square-element>
+    </div>
+  </div>
+
+  <div class="square-footer">
+    <div class="row-foot order-info row-square">
+      <ng-container *ngIf="isOrderInfoEmpty"></ng-container>
+      <ng-container *ngIf="isOrderInfoEmpty"></ng-container>
+    </div>
+
+    <div class="row-foot order-actions-btns row-square">
+      <div class="ready-action" [ngClass]="{ 'order-ready': order.status == 'ready' }" (click)="setAsReady()">
+        <ng-container *ngIf="order.status != 'ready'">
+          <i class="fas fa-spinner"></i>&nbsp;Oznacz got.
+        </ng-container>
+        <ng-container *ngIf="order.status == 'ready'">
+          <i class="fas fa-check"></i>&nbsp;Odznacz got.
+        </ng-container>
+      </div>
+      <div class="bon-action" [ngClass]="{ 'bonus-used': order.bonusUsed }" (click)="showBonusConfig()">
+        Bon
+      </div>
+      <div class="paid-action" [ngClass]="{ 'order-paid': order.paid }" (click)="showBonusConfig()">
+        <ng-container *ngIf="order.paid">
+          <i class="fas fa-money-bill-alt"></i>&nbsp;Zap.
+        </ng-container>
+        <ng-container *ngIf="!order.paid">
+          <i class="fas fa-money-bill-alt"></i>&nbsp;Nie zap.
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ng-template #temp></ng-template>

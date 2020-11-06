@@ -1,0 +1,40 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <button mat-raised-button color="primary" (click)="addNewUser()">
+            <i class="fas fa-user-plus"></i> Dodaj użytkownika
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <hr>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4" *ngFor="let u of users;let i=index">
+          <hr>
+          <app-user-one-edit [user]="u" [currentUser]="currentUser" [index]="i" [superAdminCount]="superAdminCount" (emitRemoveUnSave)="removeUnSave($event)"></app-user-one-edit>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

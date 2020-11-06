@@ -1,0 +1,80 @@
+<div class="scroll-inside-view">
+  <mat-sidenav-container class="container-side">
+    <mat-sidenav #sidenav mode="over" [(opened)]="opened">
+      <ng-container *ngIf="selectedIndex!=0">
+        <div class="min-menu">
+          <div
+               class="menu-bt-min"
+               [ngStyle]="{'color': '#FFF'}"
+               (click)="changeMenuTab(-1)">
+            MENU
+          </div>
+          <ng-container *ngFor="let item of menuElementsFull;let i= index">
+            <div
+                 class="menu-bt-min"
+                 [ngStyle]="{'color': '#'+item.fontColor, 'background-color':'#'+item.bgColor}"
+                 (click)="changeMenuTab(i)">
+              {{item.fullName | uppercase}}
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedIndex">
+        <mat-tab label="MENU">
+          <div class="scroll-inside">
+            <div class="grid-menu">
+              <ng-container *ngFor="let item of menuElementsFull;let i= index">
+                <div
+                     class="menu-bt-grid"
+                     [ngStyle]="{'color': '#'+item.fontColor, 'background-color':'#'+item.bgColor}"
+                     width="50%"
+                     (click)="changeMenuTab(i)">
+                  {{item.fullName | uppercase}}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-tab>
+        <ng-container *ngFor="let mc of menuElementsFull; let i = index">
+          <mat-tab [label]="mc.name | uppercase">
+            <div class="menu-columns-view" [ngStyle]="{'margin-top': (menuElementsFull.length/divNumber)*36+'px'}">
+              <ng-container *ngFor="let item of mc.elements">
+                <ng-container [ngSwitch]="item.elementType">
+                  <ng-container *ngSwitchCase="'one_name'">
+                    <div class="element-add" app-one-name-bt [element]="item"></div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'many_names'">
+                    <div class="element-add-100" app-many-names-bt [element]="item"></div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'desc_elements'">
+                    <div class="element-add-100 no-border" app-desc-elements-bt [element]="item"></div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'config_price'">
+                    <div class="element-add-100" app-config-price-bt [element]="item"></div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'config_steps_price'">
+                    <div class="element-add" app-config-steps-bt [element]="item"></div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'config_steps_price_many'">
+                    <div class="element-add" app-config-steps-many-bt [element]="item"></div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </mat-tab>
+        </ng-container>
+      </mat-tab-group>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="beam-under-cart">
+        <button mat-raised-button (click)="(opened)?opened=false:opened=true" color="warn">
+          <i class="fas fa-cart-plus"></i>
+        </button>
+      </div>
+      <div class="cart-groups-view">
+
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,21 @@
+<div class="confirm-window" *ngIf="showConfirm">
+
+  <div class="inside-confirm">
+    <div class="message-cont">
+      <p class="text-danger">
+        {{message}}
+      </p>
+    </div>
+
+    <div class="btns-cont">
+      <button type="button" class="btn btn-default" (click)="forget()">
+        Anuluj
+      </button>
+      <button type="button" class="btn btn-danger" (click)="confirm()">
+        Usuń
+      </button>
+    </div>
+  </div>
+
+</div>
+<div class="over-shadow"></div>

@@ -1,0 +1,21 @@
+<div class="dialog-content">
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+  <div class="inside-dialog">
+    <div class="time-select-view">
+      <input [ngxTimepicker]="timeSelect" [formControl]="timeData" placeholder="Wybierz czas" [format]="24" readonly>
+      <ngx-material-timepicker #timeSelect></ngx-material-timepicker>
+    </div>
+  </div>
+  <div class="dialog-btns">
+    <button
+            mat-raised-button (click)="closeEdit()">
+      Anuluj
+    </button>
+    <button
+            mat-raised-button [color]="'primary'" (click)="updateTime()">
+      Zapisz
+    </button>
+  </div>
+
+</div>
+<div class="over-shadow" (click)="closeEdit()"></div>

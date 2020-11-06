@@ -1,0 +1,91 @@
+/* You can add global styles to this file, and also import other style files */
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+section.m-t-90 {
+  margin-top: 90px;
+}
+
+
+.element-content {
+
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .element-info {
+    display: flex;
+    flex-direction: column;
+
+    h4 {
+      font-size: 16px;
+    }
+
+    .price-config {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+
+      span.price-value {
+        color: #F00;
+        font-size: 16px;
+      }
+
+      img.img-icon {
+        width: 25px;
+      }
+    }
+  }
+
+  .element-info-per-size {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .per-size {
+      font-size: 16px;
+    }
+
+    .price-config {
+      display: flex;
+      flex-direction: column;
+
+      .price-r {
+
+        span.price-value {
+          color: #F00;
+          font-size: 16px;
+        }
+
+        img.img-icon {
+          width: 25px;
+        }
+
+      }
+    }
+  }
+
+  button.add-cart-bt {
+    width: 100%;
+    border: none;
+    padding: 5px;
+    margin-top: 10px;
+    background-color: #100e09;
+    color: #ffffff;
+    font-size: 16px;
+  }
+
+}

@@ -1,0 +1,154 @@
+.overshadow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+}
+
+.edit-area {
+  position: fixed;
+  left: 22vw;
+  top: 22vh;
+  width: 56vw;
+  height: 56vh;
+  background: #000;
+  z-index: 22;
+  padding: 2vh 2vw 2vh 2vw;
+  z-index: 101;
+
+  .scroll-inside {
+    width: 52vw;
+    height: 52vh;
+    overflow-y: auto;
+  }
+
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: -1vh;
+    background: #000;
+    border-radius: 90px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    box-shadow: 0 0 10px #000;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+
+button.btn-save {
+  position: fixed;
+  left: 2vw;
+  bottom: 2vh;
+  width: 96vw;
+  z-index: 88;
+}
+
+
+.btns-bonus {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  button {
+    margin: 0;
+    background-color: #000;
+    border: 1px solid #ffffff;
+    height: 100px;
+    color: #ffffff;
+  }
+
+  button.checked {
+    background-color: #504426 !important;
+  }
+}
+
+
+.percents-select-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin-top: 20px;
+
+  button {
+    margin: 0;
+    background-color: #000;
+    border: 1px solid #ffffff;
+    height: 40px;
+    color: #ffffff;
+    border: none;
+
+  }
+
+  button.checked {
+    background-color: #504426 !important;
+  }
+}
+
+.row-price {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 20px;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .bonus-label {
+    font-size: 14px;
+  }
+
+  .bonus-value {
+    font-size: 18px;
+    color: #FF0000;
+  }
+
+  .base-total {
+    font-size: 16px;
+    text-decoration: line-through;
+  }
+
+  .price-total {
+    font-size: 18px;
+    color: #FF0000;
+  }
+}
+
+.row-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 20px;
+
+  button {
+    margin: 0;
+    border: none;
+    height: 50px;
+    color: #ffffff;
+  }
+
+  button.cancel {
+    background-color: #000000;
+  }
+
+  button.confirm {
+    background-color: #504426 !important;
+  }
+}

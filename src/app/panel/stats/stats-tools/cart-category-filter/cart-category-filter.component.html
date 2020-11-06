@@ -1,0 +1,17 @@
+<form [formGroup]="formC">
+  <div class="filters-beam">
+  <div class="filter">
+    <mat-form-field>
+      <mat-label>Kategoria</mat-label>
+      <mat-select formControlName="cartCategory" multiple>
+        <mat-option *ngFor="let c of cValues" [value]="c.value">
+          {{c.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="filter">
+    <mat-checkbox formControlName="all">Wszystkie</mat-checkbox>
+  </div>
+  </div>
+</form>

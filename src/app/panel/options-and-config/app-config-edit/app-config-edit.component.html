@@ -1,0 +1,239 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <form [formGroup]="formData" (submit)="saveData()">
+
+            <div class="row">
+              <div class="col-md-4">
+                <h2>Dodatkowa extra opłata</h2>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="cena dodatku extra" formControlName="extraPrice">
+                </mat-form-field>
+                <h2>Minuty do przypomnienia o realizacji</h2>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Minuty" formControlName="inProgressMinutes">
+                </mat-form-field>
+              </div>
+              <div class="col-md-8" formArrayName="acc">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2>Dodatki nie płatne</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button mat-raised-button type="button" color="primary" (click)="addAcc()">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <hr>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6" *ngFor="let item of formData.get('acc')['controls'];let i=index">
+                    <ng-container [formGroupName]="i">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <mat-form-field class="w-100">
+                            <input matInput placeholder="nazwa" formControlName="name">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <button mat-raised-button type="button" color="warn" (click)="removeAcc(i)">
+                            <i class=" fas fa-minus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" formArrayName="bonusPercents">
+
+              <div class="col-md-12">
+                <h2>Zniżki procentowe</h2>
+              </div>
+
+              <div class="col-md-12">
+                <button mat-raised-button type="button" color="primary" (click)="addPercentBonus()">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+
+              <div class="col-md-12">
+                <hr>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4" *ngFor="let item of formData.get('bonusPercents')['controls'];let i=index">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="procent" [formControlName]="i">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <button mat-raised-button type="button" color="warn" (click)="removePercentBonus(i)">
+                          <i class=" fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <hr>
+            </div>
+
+
+            <div class="col-md-12" formGroupName="defaultFiltersStates">
+              <div class="row">
+                <div class="col-md-6">
+                  <h2>Domyślne filtry (kuchnia)</h2>
+                  <ng-container formGroupName="admin">
+
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div>
+                          <mat-form-field>
+                            <mat-label>Płatność</mat-label>
+                            <mat-select formControlName="paid">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label>Rezerwacje</mat-label>
+                            <mat-select formControlName="reservation">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label>W realizacji</mat-label>
+                            <mat-select formControlName="inprogress">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <app-status-states-select
+                          [sts]="formData.get('defaultFiltersStates').get('admin').get('sts').value"
+                          (changeStates)="changeAdminStates($event)"
+                          >
+                        </app-status-states-select>
+                      </div>
+                    </div>
+
+
+                  </ng-container>
+
+                </div>
+                <div class="col-md-6">
+                  <h2>Domyślne filtry (kelnerka)</h2>
+                  <ng-container formGroupName="waiter">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div>
+                          <mat-form-field>
+                            <mat-label>Płatność</mat-label>
+                            <mat-select formControlName="paid">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label>Rezerwacje</mat-label>
+                            <mat-select formControlName="reservation">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label>W realizacji</mat-label>
+                            <mat-select formControlName="inprogress">
+                              <mat-option *ngFor="let s of statesTypes" [value]="s.value">
+                                {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <app-status-states-select
+                        [sts]="formData.get('defaultFiltersStates').get('waiter').get('sts').value"
+                        (changeStates)="changeWaiterStates($event)"
+                        >
+                      </app-status-states-select>
+                      </div>
+                    </div>
+
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <hr>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <button mat-raised-button color="primary" class="w-100">
+                  Zapisz
+                </button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

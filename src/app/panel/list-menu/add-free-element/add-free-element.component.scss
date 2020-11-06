@@ -1,0 +1,53 @@
+.overshadow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+}
+
+.edit-area {
+  position: fixed;
+  left: 27vw;
+  top: 2vh;
+  width: 46vw;
+  height: 96vh;
+  background: #FFF;
+  z-index: 22;
+  padding: 2vh 2vw 2vh 2vw;
+  z-index: 101;
+
+  .scroll-inside {
+    width: 42vw;
+    height: 92vh;
+    overflow-y: scroll;
+  }
+
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: -1vh;
+    background: #FFF;
+    border-radius: 90px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    box-shadow: 0 0 10px #000;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+
+.elements-to-add{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

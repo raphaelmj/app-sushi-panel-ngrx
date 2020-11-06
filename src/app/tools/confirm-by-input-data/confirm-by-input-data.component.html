@@ -1,0 +1,73 @@
+<div class="confirm-window">
+
+  <div class="inside-confirm">
+    <div class="message-cont">
+      <p class="text-danger" *ngIf="type==inputConfirmType.somePassword">
+        {{message}}
+      </p>
+      <p class="text-danger" *ngIf="type==inputConfirmType.randomNumber">
+        Wpisz kod z obrazka
+      </p>
+    </div>
+
+    <ng-container *ngIf="type==inputConfirmType.randomNumber">
+      <form [formGroup]="formStr" (submit)="submitStrCode()">
+
+        <div class="random-string">
+          <span class="str-rand">
+            {{randomCode}}
+          </span>
+          <span class="over-random"></span>
+        </div>
+        <mat-form-field class="w-100 text-center">
+          <input matInput placeholder="kod z obrazka" formControlName="dataStr">
+        </mat-form-field>
+        <ng-container *ngIf="!isInputOk">
+          <p class="text-danger text-center">
+            kod błędny!
+          </p>
+        </ng-container>
+
+        <div class="btns-cont">
+          <button type="button" class="btn btn-default" (click)="forget()">
+            Anuluj
+          </button>
+          <button class="btn btn-danger">
+            {{confirmName}}
+          </button>
+        </div>
+
+      </form>
+
+    </ng-container>
+    <ng-container *ngIf="type==inputConfirmType.somePassword">
+      <form [formGroup]="formStr" (submit)="submitSomePassword()">
+
+        <mat-form-field class="w-100 text-center">
+          <input matInput placeholder="hasło" type="password" formControlName="dataStr">
+        </mat-form-field>
+
+        <ng-container *ngIf="!isInputOk">
+          <p class="text-danger text-center">
+            hasło nieprawidłowe.
+          </p>
+        </ng-container>
+
+        <div class="btns-cont">
+          <button type="button" class="btn btn-default" (click)="forget()">
+            Anuluj
+          </button>
+          <button class="btn btn-danger">
+            Usuń
+          </button>
+        </div>
+
+      </form>
+    </ng-container>
+
+
+
+  </div>
+
+</div>
+<div class="over-shadow"></div>

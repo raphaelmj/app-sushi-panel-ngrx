@@ -1,0 +1,21 @@
+.bt-section {
+  position: relative;
+  text-align: center;
+
+  a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 22;
+  }
+
+  i.fas {
+    font-size: 4rem;
+  }
+}
+
+.row-margin-top {
+  margin-top: 90px;
+}

@@ -1,0 +1,46 @@
+// #navBar {
+//   background-color: #717171;
+//   position: fixed;
+//   left: 0;
+//   top: 0;
+//   width: 100%;
+//   z-index: 99;
+
+
+// }
+
+#navBarMd {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+
+  a {
+    color: #FFF;
+  }
+
+  ul.menu-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    height: 64px;
+    margin-bottom: 0;
+    margin-left: 20px;
+
+    li {
+      margin: 0 10px 0 10px;
+
+      a {
+        font-size: 1rem;
+      }
+    }
+  }
+
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

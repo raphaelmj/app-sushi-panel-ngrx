@@ -1,0 +1,77 @@
+<div class="overshadow" (click)="closeExit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeExit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="btns-bonus">
+            <button type="button" class="btn-bonus"[ngClass]="{'checked': currentBonusType==bonusType.none}" (click)="changeBonus(bonusType.none)">
+              Brak
+            </button>
+            <button type="button" class="btn-bonus"[ngClass]="{'checked': currentBonusType==bonusType.cart}" (click)="changeBonus(bonusType.cart)">
+              <i class="fas fa-stamp"></i> Pieczątki
+            </button>
+            <button type="button" class="btn-bonus"[ngClass]="{'checked': currentBonusType==bonusType.percent}" (click)="changeBonus(bonusType.percent)">
+              <i class="fas fa-percent"></i> Zniżka procentowa
+            </button>
+          </div>
+
+          <ng-container *ngIf="currentBonusType==bonusType.percent">
+            <div class="percents-select-list">
+              <button type="button" class="percent" *ngFor="let item of appConfig.data.bonusPercents" (click)="setPerecent(item)" [ngClass]="{'checked': item==currentBonusPercent}">
+                {{item+' %'}}
+              </button>
+            </div>
+          </ng-container>
+
+          <div class="row-price">
+            <div class="left">
+              <ng-container *ngIf="currentBonusType==bonusType.cart">
+                  <div class="bonus-label">Bonus: </div>
+                  <div class="bonus-value">{{currentBonusPrice+' pln'}}</div>
+              </ng-container>
+              <ng-container *ngIf="currentBonusType==bonusType.percent">
+                  <div class="bonus-label">Zniżka procent: </div>
+                  <div class="bonus-value">{{currentBonusPercent+' %'}}</div>
+              </ng-container>
+            </div>
+            <div class="right">
+                <div class="base-total" *ngIf="currentBonusType==bonusType.percent || currentBonusType==bonusType.cart">
+                  {{baseTotal.toFixed(2)+' pln'}}
+                </div>
+                <div class="price-total">
+                  {{total.toFixed(2)+' pln'}}
+                </div>
+            </div>
+          </div>
+
+          <div class="row-buttons">
+            <button type="button" (click)="closeExit()" class="cancel">
+              Anuluj
+            </button>
+            <button type="button"  (click)="confirmBonus()" class="confirm">
+              Zatwierdź
+            </button>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,41 @@
+<div class="w-100">
+  <div class="row">
+    <div class="col-md-12">
+      <button mat-raised-button color="primary" type="button" (click)="addP()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button mat-raised-button color="primary" type="button" (click)="changeOrder()">
+        Zmień kolejność
+      </button>
+      <hr>
+    </div>
+  </div>
+  <form [formGroup]="formData">
+    <mat-accordion class="example-headers-align" formArrayName="price" multi>
+      <mat-expansion-panel *ngFor="let item of formData.get('price')['controls'];let i=index" [formGroupName]="i">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="align-items-center justify-content-between d-flex w-100">
+              {{item.get('price').value}} PLN
+              <div>
+                <img src="/assets/images/krewetka.png" width="30" *ngIf="item.get('isSea').value">
+                <button mat-raised-button type="button" color="warn" (click)="removeP(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="za ilość" formControlName="perSize">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="cena" formControlName="price">
+        </mat-form-field>
+        <mat-slide-toggle formControlName="isSea">Czy jest cena z owocami morza</mat-slide-toggle>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<ng-template #temp></ng-template>

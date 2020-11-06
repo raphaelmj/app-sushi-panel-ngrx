@@ -1,0 +1,15 @@
+h2 {
+  padding: 10px 10px 0 10px;
+}
+
+.desc-element-cnt {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .element-desc {
+    width: 50%;
+    border-right: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+  }
+}

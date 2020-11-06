@@ -1,0 +1,20 @@
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel *ngFor="let item of reverseOptions;let i=index" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="align-items-center justify-content-between d-flex w-100">
+          <div>
+            {{item.name}}
+          </div>
+          <div>
+            <button mat-raised-button type="button" color="warn" (click)="remove(item)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-reverse-data-form [element]="item" (emitChange)="changeData($event)" [index]="i"></app-reverse-data-form>
+  </mat-expansion-panel>
+</mat-accordion>
+<ng-template #temp></ng-template>

@@ -1,0 +1,238 @@
+<form [formGroup]="formFilters">
+  <div class="row">
+    <div class="col-md-12 d-flex align-items-center col-filters">
+
+      <div class="progress-and-day d-flex align-items-center">
+        <div class="day-input">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker1" formControlName="day">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="inprogress-bt">
+          <button
+                  mat-raised-button
+                  [color]="'primary'"
+                  [matBadge]="inProgress"
+                  [matBadgeHidden]="inProgress<1"
+                  matBadgeColor="warn"
+                  (click)="changeInProgress()">
+            <i class="fas fa-hot-tub"></i>
+            <ng-container *ngIf="oQP.inprogress=='0'">
+              Nie realiz.
+            </ng-container>
+            <ng-container *ngIf="oQP.inprogress=='1'">
+              Tylko w realiz.
+            </ng-container>
+            <ng-container *ngIf="oQP.inprogress=='all'">
+              Realizowane
+            </ng-container>
+          </button>
+        </div>
+      </div>
+
+
+
+      <div class="other-and-status-btns d-flex align-items-center">
+
+        <div class="sts-list d-flex align-items-center">
+          <div class="all-bt">
+            <button
+                    mat-raised-button
+                    [color]="(isAll)?'primary':'default'"
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    (click)="selectAll()">
+              Wszystkie
+            </button>
+          </div>
+
+          <div class="stats-buttons">
+
+            <ul class="list-buttons">
+              <ng-container *ngFor="let item of options; let i = index">
+                <li *ngIf="item.value==orderStatus.archive">
+                  <button
+                          mat-raised-button
+                          [color]="(item.selected)?'primary':'default'"
+                          [matBadge]="archives"
+                          [matBadgeHidden]="archives<1"
+                          matBadgeColor="warn"
+                          [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                          (click)="selectUnselectStatus(i)">
+                    {{item.name}}
+                  </button>
+                </li>
+                <li *ngIf="item.value!=orderStatus.archive">
+                  <button
+                          mat-raised-button
+                          [color]="(item.selected)?'primary':'default'"
+                          [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                          (click)="selectUnselectStatus(i)">
+                    {{item.name}}
+                  </button>
+                </li>
+              </ng-container>
+            </ul>
+
+          </div>
+
+          <div class="clear-bt">
+            <button
+                    mat-raised-button
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    (click)="clearAll()">
+              <i class="fas fa-times"></i>
+            </button>
+
+          </div>
+        </div>
+
+
+
+        <div class="paid-and-reserve d-flex align-items-center">
+          <div class="paid-bt">
+            <button
+                    mat-raised-button
+                    [color]="'primary'"
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    (click)="changePaid()">
+              <i class="fas fa-money-bill"></i>
+              <ng-container *ngIf="oQP.paid=='all'">
+                Zapł. i Niezapł.
+              </ng-container>
+              <ng-container *ngIf="oQP.paid=='0'">
+                Niezapłacone
+              </ng-container>
+              <ng-container *ngIf="oQP.paid=='1'">
+                Zapłacone
+              </ng-container>
+            </button>
+
+          </div>
+
+          <div class="reserve-bt">
+            <button
+                    mat-raised-button
+                    [color]="'primary'"
+                    [matBadge]="reservations"
+                    [matBadgeHidden]="reservations<1"
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    matBadgeColor="warn"
+                    (click)="changeReservation()">
+              <i class="fas fa-ticket-alt"></i>
+              <ng-container *ngIf="oQP.reservation=='0'">
+                Bez rezerwacji
+              </ng-container>
+              <ng-container *ngIf="oQP.reservation=='1'">
+                Tylko rezerwacje
+              </ng-container>
+              <ng-container *ngIf="oQP.reservation=='all'">
+                Rezerwacje
+              </ng-container>
+            </button>
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <div class="mobile-f-btns d-flex align-items-center flex-wrap">
+        <button
+                mat-raised-button
+                [color]="'primary'"
+                [matBadge]="inProgress"
+                [matBadgeHidden]="inProgress<1"
+                matBadgeColor="warn"
+                (click)="changeInProgress()">
+          <i class="fas fa-hot-tub"></i>
+          <ng-container *ngIf="oQP.inprogress=='0'">
+            Nie realiz.
+          </ng-container>
+          <ng-container *ngIf="oQP.inprogress=='1'">
+            Tylko w realiz.
+          </ng-container>
+          <ng-container *ngIf="oQP.inprogress=='all'">
+            Realizowane
+          </ng-container>
+        </button>
+
+        <button
+                mat-raised-button
+                [color]="(isAll)?'primary':'default'"
+                [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                (click)="selectAll()">
+          Wszystkie
+        </button>
+        <ng-container *ngFor="let item of options; let i = index">
+          <ng-container *ngIf="item.value==orderStatus.archive">
+            <button
+                    mat-raised-button
+                    [color]="(item.selected)?'primary':'default'"
+                    [matBadge]="archives"
+                    [matBadgeHidden]="archives<1"
+                    matBadgeColor="warn"
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    (click)="selectUnselectStatus(i)">
+              {{item.name}}
+            </button>
+          </ng-container>
+          <ng-container *ngIf="item.value!=orderStatus.archive">
+            <button
+                    mat-raised-button
+                    [color]="(item.selected)?'primary':'default'"
+                    [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                    (click)="selectUnselectStatus(i)">
+              {{item.name}}
+            </button>
+          </ng-container>
+        </ng-container>
+        <button
+                mat-raised-button
+                [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                (click)="clearAll()">
+          <i class="fas fa-times"></i>
+        </button>
+        <button
+                mat-raised-button
+                [color]="'primary'"
+                [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                (click)="changePaid()">
+          <i class="fas fa-money-bill"></i>
+          <ng-container *ngIf="oQP.paid=='all'">
+            Zapł. i Niezapł.
+          </ng-container>
+          <ng-container *ngIf="oQP.paid=='0'">
+            Niezapłacone
+          </ng-container>
+          <ng-container *ngIf="oQP.paid=='1'">
+            Zapłacone
+          </ng-container>
+        </button>
+        <button
+                mat-raised-button
+                [color]="'primary'"
+                [matBadge]="reservations"
+                [matBadgeHidden]="reservations<1"
+                [ngClass]="{'opacity-inactive': oQP.inprogress=='1'}"
+                matBadgeColor="warn"
+                (click)="changeReservation()">
+          <i class="fas fa-ticket-alt"></i>
+          <ng-container *ngIf="oQP.reservation=='0'">
+            Bez rezerwacji
+          </ng-container>
+          <ng-container *ngIf="oQP.reservation=='1'">
+            Tylko rezerwacje
+          </ng-container>
+          <ng-container *ngIf="oQP.reservation=='all'">
+            Rezerwacje
+          </ng-container>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</form>

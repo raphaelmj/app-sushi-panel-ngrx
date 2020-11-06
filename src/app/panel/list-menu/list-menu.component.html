@@ -1,0 +1,73 @@
+<section class="m-t-90">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="btns-beam">
+        <button mat-raised-button color="primary" (click)="addGroup()">Dodaj grupę</button>
+        <button mat-raised-button color="primary" (click)="changeOrder()">Zmień kolejność grup</button>
+      </div>
+      <ng-container *ngIf="freeElements$ | async as free">
+        <div class="free-elements"
+            [ngClass]="{'text-success ': free.length==0, 'text-danger':free.length>0}">liczba wolny
+          elementów poza menu: {{free.length}}</div>
+      </ng-container>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div cdkDropListGroup class="grid-r">
+        <ng-container *ngFor="let list of menuCategories">
+          <div cdkDropList  [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+            <div class="group-title">
+              <div>
+                <h2>{{list.name}}</h2>
+                <h4 class="title-color" [ngStyle]="{'color': '#'+list.fontColor, 'background-color':'#'+list.bgColor}">
+                  {{list.fullName}}</h4>
+              </div>
+
+              <div>
+                <button mat-raised-button color="primary" (click)="editGroup(list)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button mat-raised-button color="primary" (click)="addFreeElement(list)">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button mat-raised-button color="warn" (click)="removeMenuCategory(list)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+            </div>
+            <div cdkDrag [cdkDragData]="item" *ngFor="let item of list.elements" class="box">
+              <span class="badge">{{item.id}}</span>
+              <h4 *ngIf="item.elementType=='one_name'">{{item.name}}</h4>
+              <div *ngIf="item.elementType=='many_names'" class="many-names-div">
+                <h4 *ngFor="let n of item.priceNames" [innerHTML]="n.name">
+                </h4>
+              </div>
+              <h4 *ngIf="item.elementType=='desc_elements'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_price'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_steps_price'">{{item.name}}</h4>
+              <h4 *ngIf="item.elementType=='config_steps_price_many'">{{item.name}}</h4>
+              <h5 class="badge badge-success">{{item.elementType|menuTypeName}}</h5>
+              <div>
+                <button mat-raised-button color="primary" (click)="picDown(item,list)">
+                  <i class="fas fa-thumbtack"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #editTemp></ng-template>

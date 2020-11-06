@@ -1,0 +1,69 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <form [formGroup]="formData" (submit)="saveData()">
+
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Nazwa" formControlName="name">
+                </mat-form-field>
+                <mat-slide-toggle formControlName="toPlus">
+                  w opcjach roszerzania
+                </mat-slide-toggle>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input matInput [ngxMatColorPicker]="picker" formControlName="bgColor" placeholder="Kolor tła"
+                         disabled="false"
+                         class="w-100">
+                  <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                  <ngx-mat-color-picker #picker [touchUi]="touchUi" [color]="color"></ngx-mat-color-picker>
+                </mat-form-field>
+
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <hr>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <button mat-raised-button color="primary" class="bt-save w-100">
+                  Zapisz
+                </button>
+              </div>
+            </div>
+
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

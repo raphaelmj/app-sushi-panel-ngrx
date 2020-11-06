@@ -1,0 +1,47 @@
+<div class="overshadow" (click)="closeEdit()">
+
+</div>
+
+<div class="edit-area">
+
+
+  <div class="close-btn" (click)="closeEdit()"><i class="fas fa-times"></i></div>
+
+  <div class="scroll-inside">
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="sort-area" id="sort">
+            <div class="sort-el" *ngFor="let item of elements">
+              <h3 *ngIf="presentType==presentTypes.pure">
+                {{item}}
+              </h3>
+              <h3 *ngIf="presentType==presentTypes.oneKey">
+                {{item[nameKey]}}
+              </h3>
+              <ng-container *ngIf="presentType==presentTypes.manyKeys">
+                <h3 class="many-keys">
+                  <span *ngFor="let k of nameKeys" class="span-key">
+                    {{item[k.key]}}
+                    {{k.suffix}}
+                  </span>
+                </h3>
+              </ng-container>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-12">
+          <button type="button" mat-raised-button color="primary" class="w-100" (click)="changeOrder()">
+            Zmień kolejność
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,97 @@
+.inprogress-bt {
+  margin-left: 20px;
+
+}
+
+.all-bt {
+  margin-left: 20px;
+
+  @media(max-width: 1199.98px) {
+    margin-left: 0px;
+  }
+}
+
+.stats-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
+  ul.list-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      padding: 10px;
+    }
+
+  }
+}
+
+.clear-bt {
+  margin-left: 10px;
+
+  @media(max-width:991.98px) {
+    margin-left: 0px;
+  }
+}
+
+.paid-bt {
+  margin-left: 20px;
+}
+
+.reserve-bt {
+  margin-left: 20px;
+}
+
+.opacity-inactive {
+  opacity: 0.4;
+}
+
+
+@media(max-width: 1199.98px) {
+  .col-filters {
+    flex-direction: column;
+  }
+}
+
+@media(max-width:991.98px) {
+  .col-filters {
+    padding-bottom: 10px;
+
+    .other-and-status-btns {
+      flex-direction: column;
+    }
+  }
+}
+
+@media(min-width: 600px) {
+
+  .mobile-f-btns {
+    display: none !important;
+  }
+
+}
+
+
+@media(max-width: 599.98px) {
+
+  .other-and-status-btns {
+    display: none !important;
+  }
+
+  .inprogress-bt {
+    display: none;
+  }
+
+  .mobile-f-btns {
+    button {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+}

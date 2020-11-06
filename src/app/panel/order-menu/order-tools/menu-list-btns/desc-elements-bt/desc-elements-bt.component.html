@@ -1,0 +1,27 @@
+<h2>
+  {{element.name | stripTags}}
+</h2>
+<div class="desc-element-cnt">
+  <div class="element-desc" *ngFor="let item of element.descElements; let i = index">
+
+    <div class="element-content">
+      <div class="element-info">
+        <h4>{{item.info | stripTags}}</h4>
+        <div class="price-config">
+          <span class="price-value" *ngIf="item.price!=''">
+            {{item.price + ' pln'}}
+          </span>
+          <span class="price-value" *ngIf="item.isSea && item.seaPrice!=''">
+            {{item.seaPrice + ' pln'}}
+          </span>
+          <img src="assets/images/krewetka.png" *ngIf="item.isSea && item.seaPrice!=''" class="img-icon">
+        </div>
+
+      </div>
+      <button class="add-cart-bt" (click)="addToCart(i)">
+        <i class="fas fa-cart-plus"></i>
+      </button>
+    </div>
+  </div>
+
+</div>

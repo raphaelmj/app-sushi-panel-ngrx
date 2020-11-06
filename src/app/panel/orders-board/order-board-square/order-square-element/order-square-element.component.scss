@@ -1,0 +1,65 @@
+.sq-el-content {
+  padding: 5px;
+  position: relative;
+
+  &.is-grill {
+    border-width: 1;
+    border-color: #ffffff;
+    margin: 2 2 2 0;
+    padding: 5;
+    background-color: #680000;
+    color: #ffffff;
+
+    // FlexboxLayout.gluten-free {
+    //     color: #ffff00;
+    // }
+  }
+
+  &.ready.is-grill {
+    border-width: 1;
+    border-color: #747474;
+    margin: 2 2 2 0;
+    padding: 5;
+    background-color: #3a0c00;
+    color: #747474;
+
+    // FlexboxLayout.gluten-free {
+    //     color: #747474;
+    // }
+  }
+
+
+  &.is-drink {
+    border-width: 1;
+    border-color: #ffffff;
+    margin: 2 2 2 0;
+    padding: 5;
+    background-color: #185fa1;
+    color: #ffffff;
+
+    // FlexboxLayout.gluten-free {
+    //     color: #ffff00;
+    // }
+  }
+
+  .over-click {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 77;
+  }
+
+}
+
+span.icon-info {
+  font-size: 18;
+  padding: 5px;
+}
+
+.pl-el {
+  padding: 5px;
+}
+
+.step-many {}

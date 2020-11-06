@@ -1,0 +1,88 @@
+.over-shadow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background-color: rgba($color: #000000, $alpha: 0.6);
+}
+
+.dialog-content {
+  color: #000000;
+  position: fixed;
+  left: 20%;
+  top: 10vh;
+  width: 60%;
+  z-index: 100;
+  background-color: #ffffff;
+
+  .inside-dialog {
+
+    overflow-y: auto;
+    height: 50vh;
+    width: 100%;
+
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: -1vh;
+    background: #FFF;
+    border-radius: 90px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    box-shadow: 0 0 10px #000;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+
+.time-select-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  input {
+    border: 1px solid #000000;
+    padding: 10px;
+    text-align: center;
+  }
+
+  input::-webkit-input-placeholder {
+    color: #000000;
+    text-align: center;
+  }
+
+  input:-ms-input-placeholder {
+    text-align: center;
+    color: #000000;
+  }
+
+  input::placeholder {
+    text-align: center;
+    color: #000000;
+  }
+
+
+}
+
+.dialog-btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+
+  button:first-child {
+    margin-right: 10px;
+  }
+}

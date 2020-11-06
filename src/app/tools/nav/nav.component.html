@@ -1,0 +1,47 @@
+
+
+<nav id="navBarMd" *ngIf="showNav">
+  <mat-toolbar color="primary">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <a mat-menu-item [routerLink]="['/panel']">Start</a>
+      <a mat-menu-item [routerLink]="['/panel/list-menu']">Lista menu</a>
+      <a mat-menu-item [routerLink]="['/panel/menu-elements']">Elementy karty w kategoriach</a>
+      <a mat-menu-item [routerLink]="['/panel/options-and-config']">Opcje i konfiguracja</a>
+      <a mat-menu-item [routerLink]="['/panel/orders-board']">Tablica zamówień</a>
+      <!-- <a mat-menu-item [routerLink]="['/panel/order-menu']">Złóż zamówienie</a> -->
+      <!-- <a mat-menu-item [routerLink]="['/panel/orders-board/reservations']">Rezerwacje</a> -->
+      <a mat-menu-item [routerLink]="['/panel/stats']" *ngIf="isSuper">Statystyki</a>
+    </mat-menu>
+
+    <a [routerLink]="['/panel']">
+      Miseczka Oshin
+    </a>
+
+    <!-- <ul role="navigation" class="menu-links list-unstyled">
+      <li>
+        <a [routerLink]="['/panel/list-menu']">Lista menu</a>
+      </li>
+      <li>
+        <a [routerLink]="['/panel/menu-elements']">Elementy karty w kategoriach</a>
+      </li>
+      <li>
+        <a [routerLink]="['/panel/options-and-config']">Opcje i konfiguracja</a>
+      </li>
+      <li>
+        <a [routerLink]="['/panel/orders-board']">Tablica zamówień</a>
+      </li>
+      <li>
+        <a [routerLink]="['/panel/order-menu']">Złóż zamówienie</a>
+      </li>
+
+    </ul> -->
+    <span class="spacer"></span>
+    <button mat-button (click)="logOut()">
+      Wyloguj
+    </button>
+  </mat-toolbar>
+</nav>

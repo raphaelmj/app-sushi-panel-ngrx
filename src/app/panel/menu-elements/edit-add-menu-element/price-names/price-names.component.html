@@ -1,0 +1,89 @@
+<div class="w-100">
+  <div class="row">
+    <div class="col-md-12">
+      <button mat-raised-button color="primary" type="button" (click)="addPName()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button mat-raised-button color="primary" type="button" (click)="changeOrder()">
+        Zmień kolejność
+      </button>
+      <hr>
+    </div>
+  </div>
+  <form [formGroup]="formData">
+    <mat-accordion class="example-headers-align" formArrayName="priceNames" multi>
+      <mat-expansion-panel *ngFor="let item of formData.get('priceNames')['controls'];let i=index" [formGroupName]="i">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="align-items-center justify-content-between d-flex w-100">
+              <div>
+                {{item.get('name').value}}
+              </div>
+              <button mat-raised-button type="button" color="warn" (click)="removePN(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Nazwa" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Krótka nazwa" formControlName="shortName">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <textarea matInput placeholder="Opis" formControlName="desc"></textarea>
+        </mat-form-field>
+        <div formArrayName="options">
+          <div class="row">
+            <div class="col-md-12">
+              <hr>
+              <button mat-raised-button color="primary" type="button" (click)="addOption(i)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <hr>
+            </div>
+          </div>
+          <div class="row" *ngFor="let item of item.get('options')['controls'];let j=index">
+            <div class="col-md-10">
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Nazwa opcji" [formControlName]="j">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="button" color="warn" (click)="removeOption(i,j)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div formArrayName="price">
+          <div class="row">
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel *ngFor="let item of item.get('price')['controls'];let j=index" [formGroupName]="j">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="align-items-center justify-content-between d-flex w-100">
+                      {{item.get('price').value}} PLN
+                      <div>
+                        <img src="/assets/images/krewetka.png" width="30" *ngIf="item.get('isSea').value">
+                      </div>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="za ilość" formControlName="perSize">
+                </mat-form-field>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="cena" formControlName="price">
+                </mat-form-field>
+                <mat-slide-toggle formControlName="isSea">Czy jest cena z owocami morza</mat-slide-toggle>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<ng-template #temp></ng-template>

@@ -1,0 +1,24 @@
+<div class="element-content">
+  <h4>
+    {{element.name}}
+  </h4>
+  <ng-container *ngFor="let p of prices; let i = index">
+    <div class="element-info-per-size">
+      <span class="per-size">
+        {{p.perSize + ' szt.'}}
+      </span>
+      <div class="price-config">
+        <div class="price-r" *ngFor="let pel of p.data; let j = index">
+          <span class="price-value">
+            {{pel.price + ' pln'}}
+          </span>
+          <img src="assets/images/krewetka.png" *ngIf="pel.isSea" class="img-icon">
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <button class="add-cart-bt" (click)="addToCart()">
+    <i class="fas fa-cart-plus"></i>
+  </button>
+</div>

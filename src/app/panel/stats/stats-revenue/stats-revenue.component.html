@@ -1,0 +1,24 @@
+<div class="stats-screen-cnt">
+    <mat-sidenav-container class="container-side">
+      <mat-sidenav #sidenav mode="over" [(opened)]="opened">
+        <div class="side-nav-content">
+          <h2>Statystyki utargu</h2>
+          <app-stats-menu></app-stats-menu>
+        </div>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div class="beam-under-cart">
+          <button class="open-bt" (click)="(opened)?opened=false:opened=true">
+            <i class="fas fa-chevron-right" *ngIf="!opened"></i>
+            <i class="fas fa-chevron-left" *ngIf="opened"></i>
+          </button>
+          <div class="beam-content">
+            <app-date-filters [qp]="qp" (emitChange)="changeFilters($event)"></app-date-filters>
+          </div>
+        </div>
+        <div class="content">
+          <app-revenue-dart [collection]="collection" [qp]="qp"></app-revenue-dart>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
