@@ -26,14 +26,16 @@ export class MenuCategoryService {
     return this.httpClient.post(API_URL + "/api/menu-category/update", element).toPromise()
   }
 
-
-
-  changeOrder(elements: MenuCategory[]): Promise<any> {
-    return this.httpClient.post(API_URL + "/api/menu-category/order/change", elements).toPromise()
+  getById(id: number): Observable<MenuCategory> {
+    return this.httpClient.get<MenuCategory>(API_URL + "/api/menu-category/" + id);
   }
 
-  updateMany(elements: MenuCategory[]): Observable<any> {
-    return this.httpClient.post<any>(API_URL + "/api/menu-category/update/many", elements)
+  changeOrder(elements: MenuCategory[]): Observable<MenuCategory[]> {
+    return this.httpClient.post<MenuCategory[]>(API_URL + "/api/menu-category/order/change", elements)
+  }
+
+  updateMany(elements: MenuCategory[]): Observable<MenuCategory[]> {
+    return this.httpClient.post<MenuCategory[]>(API_URL + "/api/menu-category/update/many", elements)
   }
 
   delete(id: number): Promise<any> {

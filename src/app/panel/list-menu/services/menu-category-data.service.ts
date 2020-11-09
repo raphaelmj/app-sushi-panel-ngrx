@@ -25,4 +25,12 @@ export class MenuCategoryDataService extends DefaultDataService<MenuCategory> {
     return this.http.post<MenuCategory>(API_URL + "/api/menu-category/update", entity.changes);
   }
 
+  delete(key: number | string): Observable<number | string> {
+    return this.http.delete<number | string>(API_URL + "/api/menu-category/delete/" + key);
+  }
+
+  getByKey(key: number | string): Observable<MenuCategory> {
+    return this.http.get<MenuCategory>(API_URL + "/api/menu-category/" + key);
+  }
+
 }

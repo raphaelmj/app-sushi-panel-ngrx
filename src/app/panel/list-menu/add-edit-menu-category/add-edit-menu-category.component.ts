@@ -68,22 +68,18 @@ export class AddEditMenuCategoryComponent implements OnInit, OnDestroy {
 
       if (this.isNew) {
 
-        this.menuCategoryEntityService.add(element)
-          .pipe(
-            tap(mc => {
-              this.emitClose.emit();
-              this.isSaving = false
-            })
-          )
+        this.subUpdate = this.menuCategoryEntityService.add(element)
+          .subscribe(mc => {
+            this.emitClose.emit();
+            this.isSaving = false
+          })
 
       } else {
 
         this.subUpdate = this.menuCategoryEntityService.update(rest)
-          .pipe(
-            tap(mc => {
-              this.isSaving = false
-            })
-          ).subscribe()
+          .subscribe(mc => {
+            this.isSaving = false
+          })
 
       }
 

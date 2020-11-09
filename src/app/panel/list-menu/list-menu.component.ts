@@ -1,6 +1,6 @@
 import { element } from 'protractor';
 import { MenuElementDataService } from './../services/menu-element-data.service';
-import { filter, map, tap, concatMap, mergeMap, mergeAll } from 'rxjs/operators';
+import { filter, map, tap, concatMap, mergeMap, mergeAll, combineAll, first, scan, toArray, flatMap, concatAll, finalize, last, takeUntil, reduce } from 'rxjs/operators';
 import { MenuElementEntityService } from './../services/menu-element-entity.service';
 import { MenuCategoryEntityService } from './services/menu-category-entity.service';
 import { ConfirmWindowComponent } from './../../tools/confirm-window/confirm-window.component';
@@ -12,15 +12,16 @@ import { MenuCategoryService } from './../../services/menu/menu-category.service
 import { AddEditMenuCategoryComponent } from './add-edit-menu-category/add-edit-menu-category.component';
 import { MenuElement } from './../../models/menu-element';
 import { MenuCategory } from './../../models/menu-category';
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentRef, ComponentFactoryResolver, Type, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentRef, ComponentFactoryResolver, Type, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Subscription, Observable, of, forkJoin, merge, from } from 'rxjs';
+import { Subscription, Observable, of, forkJoin, merge, zip, Subject, interval, combineLatest, from } from 'rxjs';
 
 @Component({
   selector: 'app-list-menu',
   templateUrl: './list-menu.component.html',
-  styleUrls: ['./list-menu.component.scss']
+  styleUrls: ['./list-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ListMenuComponent implements OnInit, OnDestroy {
 
@@ -53,6 +54,7 @@ export class ListMenuComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subMenuCategories = this.menuCategoryEntityService.entities$
       .subscribe(m => {
+        // console.log(m)
         this.menuCategories = m.map(mel => {
           var { elements, ...rest } = mel
           var nmel: MenuCategory = Object.assign({}, rest)
@@ -63,8 +65,39 @@ export class ListMenuComponent implements OnInit, OnDestroy {
 
     this.freeElements$ = this.menuElementEntityService.entities$
       .pipe(
-        map(elms => elms.filter(el => !el.menuCategoryId))
+        map(elms => elms.filter(el => el.menuCategoryId == null))
       )
+
+
+    // this.subMenuCategories = this.menuCategoryEntityService.entities$
+    //   .pipe(
+    //     tap(elms => {
+    //       this.menuCategories = []
+    //     }),
+    //     flatMap(mc => {
+    //       return mc
+    //     }),
+    //     mergeMap(r =>
+    //       this.menuElementEntityService.entities$
+    //         .pipe(
+    //           map(els => els.filter(e => e.menuCategoryId == r.id)),
+    //           map(els => {
+    //             var d = Object.assign({}, r)
+    //             d.elements = els
+    //             return d
+    //           })
+    //         )
+    //     ),
+    //     tap(me => {
+    //       console.log('ddd', me.id)
+    //     })
+    //   ).subscribe(
+    //     (value) => {
+    //       this.menuCategories.push(value)
+    //     }
+    //   )
+
+
   }
 
 
@@ -75,20 +108,23 @@ export class ListMenuComponent implements OnInit, OnDestroy {
         .pipe(
           map((elms: MenuElement[]) => {
             elms = elms.map((el, i) => {
-              el.ordering = i + 1
-              return el
+              var nel = Object.assign({}, el)
+              nel.ordering = i + 1
+              return nel
             })
             return elms
           }),
           mergeMap(elms => this.menuElementService.updateMany(elms)),
           tap(elms => {
-            this.menuElementEntityService.upsertManyInCache(elms)
+            this.menuElementEntityService.removeManyFromCache(elms)
+            this.menuElementEntityService.addManyToCache(elms)
           }),
           mergeMap(elms => of(event.container.data)),
           tap(me => {
             var menu: MenuCategory = Object.assign({}, me)
             menu.elements = event.container.data['elements']
-            this.menuCategoryEntityService.upsertOneInCache(menu)
+            this.menuCategoryEntityService.removeOneFromCache(menu)
+            this.menuCategoryEntityService.addOneToCache(menu)
           })
         ).subscribe()
     } else {
@@ -100,13 +136,12 @@ export class ListMenuComponent implements OnInit, OnDestroy {
       this.menuElementService.changeElementsOrderAdd(event.container.data['elements'], event.container.data['id'])
         .pipe(
           tap(elms => {
-            this.menuElementEntityService.upsertManyInCache(elms)
-          }),
-          tap(elms => {
-            this.menuCategoryEntityService.updateOneInCache(event.container.data)
-          }),
-          tap(elms => {
-            this.menuCategoryEntityService.updateOneInCache(event.previousContainer.data)
+            this.menuElementEntityService.removeManyFromCache(elms)
+            this.menuElementEntityService.addManyToCache(elms)
+            this.menuCategoryEntityService.removeOneFromCache(event.container.data)
+            this.menuCategoryEntityService.addOneToCache(event.container.data)
+            this.menuCategoryEntityService.removeOneFromCache(event.previousContainer.data)
+            this.menuCategoryEntityService.addOneToCache(event.previousContainer.data)
           })
         ).subscribe()
     }
@@ -158,7 +193,7 @@ export class ListMenuComponent implements OnInit, OnDestroy {
     this.editTemp.clear()
     let edit = this.cf.resolveComponentFactory(<Type<ChangeOrderMenuCategoriesComponent>>ChangeOrderMenuCategoriesComponent)
     this.changeOrderC = this.editTemp.createComponent(edit)
-    this.changeOrderC.instance.menuCategories$ = this.menuCategoryEntityService.entities$
+    this.changeOrderC.instance.menuCategories = this.menuCategories
     this.changeOrderC.instance.emitClose.subscribe(r => {
       this.changeOrderC.destroy()
     })
@@ -194,9 +229,15 @@ export class ListMenuComponent implements OnInit, OnDestroy {
   }
 
   removeMC(mc: MenuCategory) {
-    this.menuCategoryService.delete(mc.id).then(r => {
-      this.menuCategoryRefreshService.refresh()
-    })
+    this.menuCategoryEntityService.delete(mc.id)
+      .pipe(
+        mergeMap(k => of(mc.elements.map(e => { e.menuCategoryId = null; return e })))
+      ).subscribe(
+        me => {
+          this.menuElementEntityService.removeManyFromCache(mc.elements)
+          this.menuElementEntityService.addManyToCache(mc.elements)
+        }
+      )
   }
 
   ngOnDestroy(): void {

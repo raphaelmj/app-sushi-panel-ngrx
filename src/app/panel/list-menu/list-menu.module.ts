@@ -30,6 +30,7 @@ const entityMetaData: EntityMetadataMap = {
     }
   },
   MenuElement: {
+    sortComparer: compareByOrdering,
     entityDispatcherOptions: {
       optimisticUpdate: true
     }

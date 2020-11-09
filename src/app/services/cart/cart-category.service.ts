@@ -30,4 +30,8 @@ export class CartCategoryService {
     return this.httpClient.post(API_URL + "/api/cart-category/update", cartCategory).toPromise()
   }
 
+  getById(id: number): Observable<CartCategory> {
+    return this.httpClient.get<CartCategory>(API_URL + "/api/cart-category/" + id);
+  }
+
 }

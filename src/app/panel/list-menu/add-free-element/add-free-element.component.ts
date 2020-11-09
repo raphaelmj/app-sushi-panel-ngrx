@@ -1,6 +1,9 @@
+import { Update } from '@ngrx/entity';
+import { MenuCategoryService } from './../../../services/menu/menu-category.service';
+import { CartCategoryService } from './../../../services/cart/cart-category.service';
 import { MenuElementEntityService } from './../../services/menu-element-entity.service';
 import { MenuCategoryEntityService } from './../services/menu-category-entity.service';
-import { concatMap, map, tap } from 'rxjs/operators';
+import { concatMap, map, tap, first } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { MenuCategoryRefreshService } from './../../../services/menu/menu-category-refresh.service';
 import { MenuElementService } from './../../../services/menu/menu-element.service';
@@ -23,7 +26,8 @@ export class AddFreeElementComponent implements OnInit {
     private menuElementService: MenuElementService,
     private menuCategoryRefreshService: MenuCategoryRefreshService,
     private menuCategoryEntityService: MenuCategoryEntityService,
-    private menuElementEntityService: MenuElementEntityService
+    private menuElementEntityService: MenuElementEntityService,
+    private menuCategoryService: MenuCategoryService
   ) { }
 
   ngOnInit(): void {
@@ -31,18 +35,19 @@ export class AddFreeElementComponent implements OnInit {
 
   addElement(item: MenuElement) {
 
-    of(item)
+    var { cartCategory, ...menuElement } = item
+
+    of(menuElement)
       .pipe(
         concatMap(me => this.menuElementService.addElementToMenu(me, this.menuCategory.id)),
         tap(me => {
-          this.menuElementEntityService.upsertOneInCache(me)
+          this.menuElementEntityService.removeOneFromCache(me)
+          this.menuElementEntityService.addOneToCache(me)
         }),
-        map(me => {
-          this.menuCategory.elements.push(me)
-          return this.menuCategory
-        }),
+        concatMap(me => this.menuCategoryService.getById(this.menuCategory.id)),
         tap(mc => {
-          this.menuCategoryEntityService.upsertOneInCache(mc)
+          this.menuCategoryEntityService.removeOneFromCache(mc)
+          this.menuCategoryEntityService.addOneToCache(mc)
         })
       ).subscribe()
 

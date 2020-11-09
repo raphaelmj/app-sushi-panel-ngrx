@@ -16,10 +16,10 @@ import { DOCUMENT } from '@angular/common';
 })
 export class ChangeOrderMenuCategoriesComponent implements OnInit, OnDestroy {
 
-  @Input() menuCategories$: Observable<MenuCategory[]>
+  @Input() menuCategories: MenuCategory[]
   @Output() emitClose: EventEmitter<any> = new EventEmitter()
   sortable: Sortable
-  menuCategories: MenuCategory[]
+
   subMenuCategory: Subscription
 
   constructor(
@@ -30,10 +30,9 @@ export class ChangeOrderMenuCategoriesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subMenuCategory = this.menuCategories$.subscribe(mc => {
-      this.menuCategories = mc
-      this.createSortable()
-    })
+
+    this.createSortable()
+
 
   }
 
@@ -55,24 +54,24 @@ export class ChangeOrderMenuCategoriesComponent implements OnInit, OnDestroy {
   changeOrder() {
     of(this.menuCategories)
       .pipe(
-        map(mc => mc.map((m, i) => {
-          var nm = Object.assign({}, m)
-          nm.ordering = i + 1
-          return nm
-        })),
-        tap(mc => {
-          var nmc: Partial<MenuCategory>[] = mc.map(m => m)
-          this.menuCategoryEntityService.updateManyInCache(nmc)
-        }),
-        concatMap(mc => {
+        map(mc => {
           var nmc: MenuCategory[] = mc.map(m => {
             var { elements, ...rest } = m
             return rest
           })
-          return this.menuCategoryService.updateMany(nmc)
+          return nmc
         }),
-        first()
+        mergeMap(mc => {
+          return this.menuCategoryService.changeOrder(mc)
+        }),
+        tap(mc => {
+          // var nmc: Partial<MenuCategory>[] = mc.map(m => m)
+          this.menuCategoryEntityService.removeManyFromCache(mc)
+          this.menuCategoryEntityService.addManyToCache(mc)
+          // this.menuCategoryEntityService.upsertManyInCache(mc)
+        })
       ).subscribe()
+
   }
 
   closeEdit() {
