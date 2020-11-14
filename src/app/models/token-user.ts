@@ -6,4 +6,6 @@ export interface UserToken {
   role?: UserRole | string;
   permission?: UserPerm
   exp?: number
+  accessToken?: string
+  uuid?: string
 }

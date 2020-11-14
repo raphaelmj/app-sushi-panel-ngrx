@@ -1,3 +1,5 @@
+import { UserUuidInterceptor } from './interceptors/user-uuid.interceptor';
+import { AppTokenInterceptor } from './interceptors/app-token.interceptor';
 import { metaReducers } from './reducers/index';
 import { reducers } from './reducers';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -18,6 +20,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 const config: SocketIoConfig = { url: WEBSOCKET_URL, options: { origin: '*', transport: ['websocket'] } };
@@ -52,7 +55,9 @@ const config: SocketIoConfig = { url: WEBSOCKET_URL, options: { origin: '*', tra
     EntityDataModule.forRoot(entityConfig)
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL', multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AppTokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UserUuidInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

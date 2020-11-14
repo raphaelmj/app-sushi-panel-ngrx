@@ -113,12 +113,12 @@ export class OptionsAndConfigComponent implements OnInit, OnDestroy {
 
   openAppConfig() {
     this.temp.clear()
-    let edit = this.cf.resolveComponentFactory(<Type<AppConfigEditComponent>>AppConfigEditComponent)
-    this.appConfigEditC = this.temp.createComponent(edit)
+    let edit = this.cf.resolveComponentFactory(<Type<AppConfigEditComponent>>AppConfigEditComponent);
+    this.appConfigEditC = this.temp.createComponent(edit);
     // this.appConfigEditC.instance.appConfig = this.appConfig
     this.appConfigEditC.instance.appConfig$ = this.store.pipe(select(selectFirstAppConfig))
     this.appConfigEditC.instance.emitClose.subscribe(e => {
-      this.appConfigEditC.destroy()
+      this.appConfigEditC.destroy();
     })
   }
 
@@ -126,13 +126,13 @@ export class OptionsAndConfigComponent implements OnInit, OnDestroy {
   async openPasswordsUsers() {
     this.temp.clear()
     if (this.currentUser.permission == 'superadmin') {
-      var users: User[] = await this.getUsers()
+      const users: User[] = await this.getUsers()
       let a = this.cf.resolveComponentFactory(<Type<UsersAdminComponent>>UsersAdminComponent);
       this.usersAdminC = this.temp.createComponent(a)
-      this.usersAdminC.instance.users = users
-      this.usersAdminC.instance.currentUser = this.currentUser
+      this.usersAdminC.instance.users = users;
+      this.usersAdminC.instance.currentUser = this.currentUser;
       this.usersAdminC.instance.emitClose.subscribe(r => {
-        this.usersAdminC.destroy()
+        this.usersAdminC.destroy();
       })
     }
   }

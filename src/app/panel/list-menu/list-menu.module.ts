@@ -1,3 +1,5 @@
+import { UserUuidInterceptor } from './../../interceptors/user-uuid.interceptor';
+import { AppTokenInterceptor } from './../../interceptors/app-token.interceptor';
 import { MenuElementEntityService } from './../services/menu-element-entity.service';
 import { MenuElementsResolveService } from './../services/menu-elements-resolve.service';
 import { MenuElementDataService } from './../services/menu-element-data.service';
@@ -14,7 +16,7 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ListMenuRoutingModule } from './list-menu-routing.module';
 import { ListMenuComponent } from './list-menu.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddEditMenuCategoryComponent } from './add-edit-menu-category/add-edit-menu-category.component';
 import { ChangeOrderMenuCategoriesComponent } from './change-order-menu-categories/change-order-menu-categories.component';
 import { AddFreeElementComponent } from './add-free-element/add-free-element.component';
@@ -51,7 +53,9 @@ const entityMetaData: EntityMetadataMap = {
     PipesModule
   ],
   providers: [
-    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AppTokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UserUuidInterceptor, multi: true },
     MenuCategoryEntityService,
     MenuCategoryResolveService,
     MenuCategoryDataService,

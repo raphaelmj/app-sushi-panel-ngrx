@@ -13,6 +13,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SelectDateComponent } from './select-date/select-date.component';
 import { SelectDatetimeComponent } from './select-datetime/select-datetime.component';
 import { SelectTimeComponent } from './select-time/select-time.component';
+import { PaginationAsyncComponent } from './pagination-async/pagination-async.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SelectTimeComponent } from './select-time/select-time.component';
     SelectDateComponent,
     SelectDatetimeComponent,
     SelectTimeComponent,
-    NavComponent
+    NavComponent,
+    PaginationAsyncComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { SelectTimeComponent } from './select-time/select-time.component';
     SelectDateComponent,
     SelectDatetimeComponent,
     SelectTimeComponent,
-    NavComponent
+    NavComponent,
+    PaginationAsyncComponent
   ]
 })
 export class ToolsModule { }

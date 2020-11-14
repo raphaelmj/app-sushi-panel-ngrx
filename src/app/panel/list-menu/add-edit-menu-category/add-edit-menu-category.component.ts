@@ -43,8 +43,8 @@ export class AddEditMenuCategoryComponent implements OnInit, OnDestroy {
   }
 
   createForm() {
-    var bgc: Color = (this.element.bgColor) ? this.colorAdapter.parse(this.element.bgColor) : this.colorAdapter.parse('#000000');
-    var ftc: Color = (this.element.fontColor) ? this.colorAdapter.parse(this.element.fontColor) : this.colorAdapter.parse('#FFFFFF')
+    let bgc: Color = (this.element.bgColor) ? this.colorAdapter.parse(this.element.bgColor) : this.colorAdapter.parse('#000000');
+    let ftc: Color = (this.element.fontColor) ? this.colorAdapter.parse(this.element.fontColor) : this.colorAdapter.parse('#FFFFFF')
     this.editForm = this.fb.group({
       name: [this.element.name, Validators.required],
       fullName: [this.element.fullName, Validators.required],
@@ -60,11 +60,11 @@ export class AddEditMenuCategoryComponent implements OnInit, OnDestroy {
     if (this.editForm.valid) {
       this.isSaving = true;
 
-      var { bgColor, fontColor, ...rs } = this.editForm.value
-      var element: MenuCategory = { ...this.element, ...rs }
+      let { bgColor, fontColor, ...rs } = this.editForm.value
+      let element: MenuCategory = { ...this.element, ...rs }
       element.bgColor = this.editForm.value.bgColor.hex
       element.fontColor = this.editForm.value.fontColor.hex
-      var { elements, ...rest } = element
+      let { elements, ...rest } = element
 
       if (this.isNew) {
 

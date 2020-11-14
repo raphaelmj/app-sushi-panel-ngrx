@@ -1,11 +1,10 @@
 import { AuthState } from './../../login/reducers/index';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

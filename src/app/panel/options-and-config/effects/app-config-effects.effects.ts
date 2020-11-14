@@ -1,7 +1,7 @@
 import { AppConfigService } from '../../../services/options-config/app-config.service';
 import { concatMap, map } from 'rxjs/operators';
 import { loadAppConfigLoadeds, loadAppConfig, appConfigUpdated } from './../app-config-entity/app-config.actions';
-import { ofType } from '@ngrx/effects';
+import { Effect, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 
@@ -10,14 +10,23 @@ import { Actions, createEffect } from '@ngrx/effects';
 @Injectable()
 export class AppConfigEffectsEffects {
 
-  loadAppConfig$ = createEffect(
-    () => this.actions$
-      .pipe(
-        ofType(loadAppConfig),
-        concatMap(action => this.appConfigService.getFirst()),
-        map(appConfig => loadAppConfigLoadeds({ appConfig }))
-      )
-  )
+  @Effect()
+  loadAppConfig$ = this.actions$
+    .pipe(
+      ofType(loadAppConfig),
+      concatMap(action => this.appConfigService.getFirst()),
+      map(appConfig => loadAppConfigLoadeds({ appConfig }))
+    )
+
+
+  // loadAppConfig$ = createEffect(
+  //   () => this.actions$
+  //     .pipe(
+  //       ofType(loadAppConfig),
+  //       concatMap(action => this.appConfigService.getFirst()),
+  //       map(appConfig => loadAppConfigLoadeds({ appConfig }))
+  //     )
+  // )
 
   saveApp$ = createEffect(
     () => this.actions$

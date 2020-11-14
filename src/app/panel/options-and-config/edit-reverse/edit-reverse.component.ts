@@ -29,7 +29,7 @@ export class EditReverseComponent implements OnInit {
   }
 
   changeData(event: { data: ReverseOptions, index: number }) {
-    var update: Update<ReverseOptions> = {
+    const update: Update<ReverseOptions> = {
       id: event.data.id,
       changes: event.data
     }

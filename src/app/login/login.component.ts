@@ -9,6 +9,7 @@ import { NavService } from '../services/auth/nav.service';
 import { UserRole } from '../models/user';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-login',
@@ -45,15 +46,15 @@ export class LoginComponent implements OnInit, DoCheck {
   sumbmitLogin() {
     this.spinnerShow = true;
     this.userService
-      .checkLoginAndMakeToken(this.nick, this.password, this.role)
+      .checkLoginAndMakeToken(this.nick, this.password, this.role, uuidv4())
       .pipe(
         tap(
-          (res: { success: boolean; access_token: string; user?: User, userData?: User, exp?: number }) => {
+          (res: { success: boolean; access_token: string; user?: User, userData?: User, exp?: number, uuid: string }) => {
             if (res.success) {
-              var { password, status, ...userToken } = res.user
-              var userT: UserToken = { ...userToken, ...{ exp: res.exp } }
-              var user: User = res.userData
-              var loginAction = login({ userToken: userT, user })
+              let { password, status, ...userToken } = res.user
+              let userT: UserToken = { ...userToken, ...{ exp: res.exp, accessToken: res.access_token, uuid: res.uuid } }
+              let user: User = res.userData
+              const loginAction = login({ userToken: userT, user })
               this.store.dispatch(loginAction)
             }
           }

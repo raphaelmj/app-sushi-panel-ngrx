@@ -1,28 +1,34 @@
-<section class="board">
-  <div class="filters-beam">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <app-orders-filters
-                              [userToken]="userToken"
-                              [appConfig]="appConfig"
-                              [oQP]="oQP"
-                              [reservations]="reservations"
-                              [archives]="archives"
-                              [inProgress]="inProgress"
-                              (changeFilters)="changeFilters($event)">
-          </app-orders-filters>
+
+  <section class="board">
+    <div class="filters-beam">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <ng-container *ngIf="filterData$ | async as f">
+              <app-orders-filters
+                [data]="f"
+                [userToken]="userToken"
+                [appConfig]="appConfig"
+                (changeFilters)="changeFilters($event)">
+              </app-orders-filters>
+            </ng-container>
+          </div>
         </div>
       </div>
+
     </div>
 
+    <div class="grid-board">
+      <ng-container *ngIf="data$ | async as d">
+        <app-order-board-square *ngFor="let order of d.orders; let i = index" [order]="order" [day]="currentDay" [appConfig]="appConfig">
+        </app-order-board-square>
+      </ng-container>
+    </div>
+  </section>
+
+  <div class="pag-nav">
+    <ng-container *ngIf="pagData$ | async as d">
+      <app-pagination-async [data]="d" (emitChange)="changePage($event)"></app-pagination-async>
+    </ng-container>
   </div>
 
-  <div class="grid-board">
-    <app-order-board-square *ngFor="let order of orders; let i = index" [order]="order" [day]="currentDay" [appConfig]="appConfig">
-    </app-order-board-square>
-  </div>
-</section>
-<div class="pag-nav">
-  <app-pagination [pages]="pages" [current]="oQP.page" (emitChange)="changePage($event)"></app-pagination>
-</div>

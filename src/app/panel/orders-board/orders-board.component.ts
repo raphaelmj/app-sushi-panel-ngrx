@@ -1,3 +1,4 @@
+import { tap, map, concatMap, skip, skipUntil, switchMap } from 'rxjs/operators';
 import { AppConfig } from './../../models/app-config';
 import { OrderElementStatusChangeRefreshService } from './../../services/socket-oi/order-element-status-change-refresh.service';
 import { RefreshAfterDeleteOrderService } from './../../services/socket-oi/refresh-after-delete-order.service';
@@ -8,10 +9,10 @@ import { SocketEventsListenService } from './../../services/socket-oi/socket-eve
 import { GetDataOrdersRefreshService } from './../../services/socket-oi/get-data-orders-refresh.service';
 import { OrderQueryParams } from '../../models/order-query-params';
 import { CartOrder } from '../../models/cart-order';
-import { Subscription, Observable, interval } from 'rxjs';
+import { Subscription, Observable, interval, of, from } from 'rxjs';
 import { OrderStatus, OrderStatusName } from './../../models/cart-order';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UserToken } from 'src/app/models/token-user';
 import { OrderService } from 'src/app/services/orders/order.service';
 import * as moment from "moment";
@@ -24,23 +25,18 @@ import * as moment from "moment";
 export class OrdersBoardComponent implements OnInit, OnDestroy {
 
   oQP: OrderQueryParams;
-  orders: CartOrder[] = [];
-  total: number = 0;
-  pages: number = 0;
+  data$: Observable<{ orders: CartOrder[], total: number, qp: OrderQueryParams, reservations: number, archives: number, inProgress: number }>
+  filterData$: Observable<{ qp: OrderQueryParams, reservations: number, archives: number, inProgress: number }>
+  pagData$: Observable<{ current: string | number, total: number }>
+  orders$: Observable<CartOrder[]>
+
   appConfig: AppConfig
   subOrders: Subscription;
   subRoute: Subscription;
   subRefresh: Subscription;
   subDataChange: Subscription;
   userToken: UserToken
-
-  reservations: number
-  archives: number
-  inProgress: number
   listInProgress: boolean = false
-  load: boolean = true;
-
-
 
   selectedStatusOptions: string[];
   currentDay: Date;
@@ -48,6 +44,7 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
   subDeleteOrder: Subscription
   subInProgress: Subscription
   dayInterval: Observable<number> = interval(1000 * 60);
+  subData: Subscription
 
 
   constructor(
@@ -57,23 +54,29 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
     private socketEventsListenService: SocketEventsListenService,
     private router: Router,
     private refreshAfterCronInprogressService: RefreshAfterCronInprogressService,
-    private refreshAfterDeleteOrderService: RefreshAfterDeleteOrderService
+    private refreshAfterDeleteOrderService: RefreshAfterDeleteOrderService,
+    private cdRef: ChangeDetectorRef
   ) {
-    this.oQP = this.activatedRoute.snapshot.data["ordersData"].qp;
-    this.selectedStatusOptions = this.oQP.sts.split("|");
-    this.orders = this.activatedRoute.snapshot.data["ordersData"].orders;
     this.userToken = this.activatedRoute.snapshot.data["user"];
-    this.total = this.activatedRoute.snapshot.data["ordersData"].total;
-    this.reservations = this.activatedRoute.snapshot.data["ordersData"].reservations
-    this.archives = this.activatedRoute.snapshot.data["ordersData"].archives
-    this.inProgress = this.activatedRoute.snapshot.data["ordersData"].inProgress
     this.appConfig = this.activatedRoute.snapshot.data['config']
-    this.currentDay = moment(this.oQP.day).toDate();
-    this.countPages();
     this.socketEventsListenService.startListen(this.userToken)
+
+
+    // this.data$ = of(this.activatedRoute.snapshot.data["ordersData"])
   }
 
   ngOnInit(): void {
+    this.data$ = of(this.activatedRoute.snapshot.data["ordersData"])
+      .pipe(
+        tap(d => {
+          let { orders, ...f } = d
+          this.filterData$ = of(f)
+          this.pagData$ = of({ current: d.qp.page, total: d.total })
+          this.oQP = d.qp
+          this.currentDay = moment(this.oQP.day).toDate();
+          this.cdRef.detectChanges()
+        })
+      )
     this.subscribeToOrdersChange();
     this.refreshInProgressSubscribe();
     this.changeDataSubscribe();
@@ -89,7 +92,6 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
 
   refreshInProgressSubscribe() {
     this.subInProgress = this.refreshAfterCronInprogressService.action$.subscribe((r: { isChanged: boolean }) => {
-      // console.log(r)
       if (r.isChanged) {
         this.getData();
       }
@@ -98,11 +100,8 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
 
   changeDataSubscribe() {
     this.subDataChange = this.getDataOrdersRefreshService.action$.subscribe((bool) => {
-      // console.log(bool.bool)
       if (bool.bool) {
-        // if (bool.uuid != device.uuid) {
-        this.getData();
-        // }
+        this.getData()
       }
     });
   }
@@ -114,27 +113,35 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
   }
 
   routeChangeWatch() {
-    this.subRoute = this.activatedRoute.queryParams.subscribe((qp: OrderQueryParams) => {
-      if (!this.load) {
-        this.oQP = { ...this.oQP, ...qp }
-        this.getOrders(this.oQP);
-      } else {
-        this.load = false;
-      }
-    });
+
+    // this.data$ = this.activatedRoute.queryParams
+    //   .pipe(
+    //     switchMap(qp => {
+    //       return this.getDataO(true, <OrderQueryParams>qp)
+    //     })
+    //   )
+
+    this.subRoute = this.activatedRoute.queryParams
+      .pipe(
+        skip(1)
+      )
+      .subscribe((qp: OrderQueryParams) => {
+        this.data$ = this.getDataObs(true, <OrderQueryParams>qp)
+      });
   }
 
   changePage(p: NavPage) {
+    this.oQP.page = p.nr
     this.router.navigate(["/panel/orders-board"], {
-      queryParams: { page: p.nr, sts: this.oQP.sts, day: this.oQP.day, paid: this.oQP.paid, reservation: this.oQP.reservation, inprogress: this.oQP.inprogress },
+      queryParams: this.oQP,
     });
   }
 
   changeFilters(oQP: OrderQueryParams) {
     this.oQP = oQP
-    this.currentDay = moment(this.oQP.day).toDate();
+    this.oQP.page = 1
     this.router.navigate(["/panel/orders-board"], {
-      queryParams: { page: 1, sts: this.oQP.sts, day: this.oQP.day, paid: this.oQP.paid, reservation: this.oQP.reservation, inprogress: this.oQP.inprogress },
+      queryParams: this.oQP
     });
   }
 
@@ -143,46 +150,42 @@ export class OrdersBoardComponent implements OnInit, OnDestroy {
     this.getData(true);
   }
 
-  getOrders(qp: OrderQueryParams) {
-    this.oQP = Object.assign({}, qp)
-    this.getData(true);
-  }
 
-  countPages() {
-    if (this.total != 0) {
-      this.pages = Math.ceil(this.total / LIMIT);
-    } else {
-      this.pages = 1;
-    }
-  }
 
   getData(pageOrRefresh: boolean = false) {
+    this.data$ = this.getDataObs(pageOrRefresh, this.oQP)
+  }
+
+  getDataObs(pageOrRefresh: boolean = false, oQP: OrderQueryParams): Observable<{ orders: CartOrder[], total: number, qp: OrderQueryParams, reservations: number, archives: number, inProgress: number }> {
 
     if (pageOrRefresh)
       this.listInProgress = true
 
-    this.subOrders = this.orderService.getOrders(this.oQP).subscribe(data => {
-      this.total = data.total;
-      this.orders = data.orders;
-      this.oQP = data.qp;
-      this.reservations = data.reservations
-      this.archives = data.archives
-      this.inProgress = data.inProgress
-      this.countPages();
-      if (pageOrRefresh)
-        this.listInProgress = false
-
-      if (this.pages < Number(this.oQP.page)) {
-        this.oQP.page = Number(this.oQP.page) - 1;
-        this.getData();
-      }
-    })
+    return this.orderService.getOrders(oQP)
+      .pipe(
+        tap(
+          d => {
+            let { orders, ...f } = d
+            this.filterData$ = of(f)
+            this.pagData$ = of({ current: d.qp.page, total: d.total })
+            this.listInProgress = false
+            this.oQP = d.qp
+            this.currentDay = moment(this.oQP.day).toDate();
+            let pages: number = (d.total != 0) ? Math.ceil(d.total / LIMIT) : 1
+            if (pages < Number(d.qp.page)) {
+              this.oQP.page = Number(d.qp.page) - 1;
+              this.getData();
+            }
+          }
+        )
+      )
   }
 
   ngOnDestroy(): void {
     if (this.subOrders) this.subOrders.unsubscribe()
     if (this.subRefresh) this.subRefresh.unsubscribe()
     if (this.subRoute) this.subRoute.unsubscribe()
+    if (this.subData) this.subData.unsubscribe()
     this.socketEventsListenService.unsubscribeAll()
   }
 

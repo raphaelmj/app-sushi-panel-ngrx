@@ -58,7 +58,7 @@ export class BonusSetConfigComponent implements OnInit {
         if (this.currentBonusPercent == 0) {
           this.total = this.baseTotal
         } else {
-          var percentValue: number = this.calculateService.percentFind(this.currentBonusPercent, this.baseTotal)
+          let percentValue: number = this.calculateService.percentFind(this.currentBonusPercent, this.baseTotal)
           this.total = this.calculateService.minusElements(this.baseTotal, percentValue)
         }
         break;

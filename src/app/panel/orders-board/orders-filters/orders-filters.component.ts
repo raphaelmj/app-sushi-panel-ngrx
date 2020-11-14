@@ -1,12 +1,13 @@
+import { tap } from 'rxjs/operators';
 import { AppConfig, FilterState } from './../../../models/app-config';
 import { UserRole } from './../../../models/user';
 import { UserToken } from './../../../models/token-user';
 import { OrderStatus, OrderStatusName } from './../../../models/cart-order';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { OrderQueryParams } from '../../../models/order-query-params';
-import { Component, Input, OnInit, OnDestroy, Output, EventEmitter, AfterContentInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
 import * as moment from "moment";
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 
 export interface OptionStatus {
   name: OrderStatusName
@@ -19,18 +20,18 @@ export interface OptionStatus {
   templateUrl: './orders-filters.component.html',
   styleUrls: ['./orders-filters.component.scss']
 })
-export class OrdersFiltersComponent implements OnInit, OnDestroy, AfterContentInit {
+export class OrdersFiltersComponent implements OnInit, OnDestroy, OnChanges {
 
 
   @Output() changeFilters: EventEmitter<OrderQueryParams> = new EventEmitter<OrderQueryParams>()
-
-  @Input() oQP: OrderQueryParams;
+  @Input() data: { qp: OrderQueryParams, reservations: number, archives: number, inProgress: number }
   @Input() userToken: UserToken;
   @Input() appConfig: AppConfig;
-  @Input() reservations: number = 0
-  @Input() archives: number = 0
-  @Input() inProgress: number = 0
-  @Input() options: OptionStatus[] = [
+  oQP: OrderQueryParams
+  reservations: number = 0
+  archives: number = 0
+  inProgress: number = 0
+  options: OptionStatus[] = [
     { name: OrderStatusName.create, value: OrderStatus.create },
     { name: OrderStatusName.ready, value: OrderStatus.ready },
     { name: OrderStatusName.archive, value: OrderStatus.archive },
@@ -50,8 +51,16 @@ export class OrdersFiltersComponent implements OnInit, OnDestroy, AfterContentIn
 
   constructor(private fb: FormBuilder) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
+
 
   ngOnInit(): void {
+    this.oQP = this.data.qp
+    this.reservations = this.data.reservations
+    this.archives = this.data.archives
+    this.inProgress = this.data.inProgress
     this.createForm()
     this.subscribeToDayChange()
     this.selectedOptions = this.oQP.sts.split('|');
@@ -59,9 +68,6 @@ export class OrdersFiltersComponent implements OnInit, OnDestroy, AfterContentIn
     this.setStatusIndexes()
   }
 
-  ngAfterContentInit(): void {
-
-  }
 
 
   subscribeToDayChange() {

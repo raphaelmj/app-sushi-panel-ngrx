@@ -19,10 +19,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const userTokenJson = localStorage.getItem('userToken')
-    const userJson = localStorage.getItem('user')
+    const userTokenJson = localStorage.getItem('userToken');
+    const userJson = localStorage.getItem('user');
     if (userTokenJson && userJson) {
-      this.store.dispatch(login({ userToken: JSON.parse(userTokenJson), user: JSON.parse(userJson) }))
+      this.store.dispatch(login({ userToken: JSON.parse(userTokenJson), user: JSON.parse(userJson) }));
     }
   }
 
